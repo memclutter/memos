@@ -19,35 +19,49 @@ Per [python.md](../../../../rules/python.md): CPython ≥3.11, `uv`, `src/` layo
 
 ### Layout
 
+The package lives entirely under `scripts/memos/`; the repo root carries only a
+**virtual uv workspace** declaration so `uv run memos` works from the root.
+
 ```
-pyproject.toml
-src/memos/
-├── __init__.py
-├── __main__.py        # python -m memos
-├── cli.py             # argparse: main() + subcommand wiring
-└── shims.py           # shim model: load skills, compute + write shims
-tests/
-└── test_shims.py
+pyproject.toml                 # virtual workspace root: [tool.uv.workspace] members = ["scripts/memos"]
+scripts/memos/
+├── pyproject.toml             # the memos package (hatchling, entry point, deps, ruff/mypy)
+├── src/memos/
+│   ├── __init__.py
+│   ├── __main__.py            # python -m memos
+│   ├── cli.py                 # argparse: main() + subcommand wiring
+│   └── shims.py               # shim model: load skills, compute + write shims
+└── tests/
+    └── test_shims.py
 ```
 
-- `scripts/memos` is **removed**; its logic now lives in `src/memos/`.
+- The old single-file `scripts/memos` (a **file**) is replaced by the
+  `scripts/memos/` package **directory**. A file and directory can't share a name,
+  so the file is `git rm`'d before the directory is created.
+- Invocation is `uv run memos <command>` from the repo root, resolved through the
+  workspace.
 
-### `pyproject.toml`
+### `pyproject.toml` (two files)
 
-- `[project]`: `name = "memos"`, `version`, `requires-python = ">=3.11"`,
-  `dependencies = ["pyyaml>=6"]`.
-- `[project.scripts]`: `memos = "memos.cli:main"` → enables `uv run memos`.
-- `[build-system]`: `hatchling`; `[tool.hatch.build.targets.wheel]`
-  `packages = ["src/memos"]`.
-- Dev deps via `[dependency-groups] dev = ["pytest", "ruff", "mypy"]`.
-- `[tool.ruff]`, `[tool.mypy]` configured (mypy `strict` over `src`).
+- **Root** (`pyproject.toml`): virtual workspace only — `[tool.uv.workspace]`
+  `members = ["scripts/memos"]`, no `[project]` table.
+- **Package** (`scripts/memos/pyproject.toml`):
+  - `[project]`: `name = "memos"`, `version`, `requires-python = ">=3.11"`,
+    `dependencies = ["pyyaml>=6"]`.
+  - `[project.scripts]`: `memos = "memos.cli:main"`.
+  - `[build-system]`: `hatchling`; `[tool.hatch.build.targets.wheel]`
+    `packages = ["src/memos"]`.
+  - Dev deps via `[dependency-groups] dev = ["pytest", "ruff", "mypy",
+    "types-PyYAML"]`.
+  - `[tool.ruff]`, `[tool.mypy]` configured (mypy `strict` over `src`).
 
 ### Repo-root resolution (key change)
 
 The script currently uses `ROOT = Path(__file__).parent.parent`, which breaks once
-the code sits under `src/memos/`. Replace with a `find_repo_root(start)` that
-ascends until it finds a marker (`AGENTS.md` + `rules/`), raising a clear error if
-not found. All path logic (`SKILLS_DIR`, `TOOLS`, tool shim dirs) hangs off that.
+the code sits under `scripts/memos/src/memos/`. Replace with a
+`find_repo_root(start)` that ascends until it finds a marker (`AGENTS.md` +
+`rules/`), raising a clear error if not found. All path logic (`SKILLS_DIR`,
+`TOOLS`, tool shim dirs) hangs off that.
 
 ### `shims.py` (refactor of `shimify`)
 
