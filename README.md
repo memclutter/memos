@@ -1,5 +1,16 @@
 # memos
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/memclutter/memos?sort=semver)](https://github.com/memclutter/memos/releases)
+[![Last commit](https://img.shields.io/github/last-commit/memclutter/memos)](https://github.com/memclutter/memos/commits/main)
+
+[![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)](rules/go.md)
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](rules/python.md)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)](rules/data.md)
+[![Redis](https://img.shields.io/badge/Redis-FF4438?logo=redis&logoColor=white)](rules/data.md)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](rules/docker.md)
+[![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?logo=vuedotjs&logoColor=white)](rules/vue.md)
+
 A **personal operating system** for running open-source projects — a single
 repository that holds the rules, structure, tasks, and agent skills used to
 build and maintain everything under
