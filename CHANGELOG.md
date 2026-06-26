@@ -28,6 +28,13 @@ Project submodule layout, the first onboarded project, and broader tooling.
 - Added third-party references and attributions to the README; made
   import-existing-repo guidance explicit in `sys.project.specify`.
 
+### Tooling
+
+- pre-commit now mirrors CI (`ruff check`, `ruff format --check`, `mypy`,
+  `memos doctor`).
+- Moved the uv workspace root to `scripts/`, consolidating `.venv` and tool
+  caches under `scripts/` instead of scattering them at the repo root.
+
 ## [0.0.3] - 2026-06-26
 
 ### Added

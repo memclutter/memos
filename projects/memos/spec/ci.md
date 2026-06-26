@@ -8,16 +8,16 @@ Actions on every push and pull request.
 
 ## Behaviour
 
-- **`memos doctor`** is the single health gate. It runs two read-only checks:
-  shims in sync with canonical skills, and the rules index in sync with
-  `rules/` ([cli.md](cli.md)).
-- **Local pre-commit** — `.pre-commit-config.yaml` defines a `repo: local` hook
-  (`memos-doctor`) that runs `uv run memos doctor` on every commit
-  (`always_run: true`, `pass_filenames: false`). Install with `pre-commit install`
-  (documented in [README.md](../README.md)).
+- **`memos doctor`** is the consistency health gate. It runs read-only checks:
+  shims in sync with canonical skills, the rules index in sync with `rules/`, and
+  each non-`self` project's submodules under `vcs/<repo-name>/` ([cli.md](cli.md)).
+- **Local pre-commit** — `.pre-commit-config.yaml` defines `repo: local` hooks
+  that mirror CI: `ruff check`, `ruff format --check`, `mypy`, and `memos doctor`
+  (each `always_run: true`, `pass_filenames: false`), all run from `scripts/memos`.
+  Install with `pre-commit install` (documented in [README.md](../README.md)).
 - **GitHub Actions** — `.github/workflows/ci.yml` runs on `push` and
   `pull_request`: lint, format check, type-check, and test the `scripts/memos`
-  package, then run `uv run memos doctor` from the repo root.
+  package, then run `memos doctor` — all from `scripts/memos`.
 
 ## Success criteria
 

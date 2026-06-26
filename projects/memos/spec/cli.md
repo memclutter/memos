@@ -10,9 +10,11 @@ canonical sources.
 
 - The CLI is a `uv`-managed Python package under `scripts/memos/` (`src/` layout,
   its own `pyproject.toml`, `ruff`/`mypy`/`pytest`), exposed as a `memos` console
-  script. The repo root declares a `uv` workspace whose only member is
-  `scripts/memos`, so it runs from the repo root via `uv`:
-  `uv run memos <command>` ([scripts.md](../../../rules/scripts.md)).
+  script. The `uv` workspace root lives at `scripts/pyproject.toml` (sole member
+  `memos`), so uv keeps the virtualenv (`scripts/.venv`) and tool caches
+  (`scripts/.cache`) under `scripts/`. Run it from `scripts/memos`, or from the
+  repo root with `uv run --directory scripts/memos memos <command>`
+  ([scripts.md](../../../rules/scripts.md)).
 - Current commands:
   - `shimify` — regenerate every per-tool skill shim from the canonical
     `skills/<name>/SKILL.md`, for all supported tools (Claude, Cursor, Codex,
