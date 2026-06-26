@@ -24,6 +24,7 @@ chat history — is what's authoritative. The OS manages itself as a project too
 - [skills.md](skills.md) — canonical agent skills and the per-tool shims.
 - [workflow.md](workflow.md) — projects, tasks, and the two-level SDD loop.
 - [cli.md](cli.md) — the `memos` CLI that maintains the OS.
+- [ci.md](ci.md) — automated enforcement of OS consistency (pre-commit + CI).
 
 ## Product-wide success criteria
 

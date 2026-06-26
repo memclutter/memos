@@ -32,6 +32,7 @@ OpenCode.
 ## Success criteria
 
 - Every folder in `skills/` has a matching shim in each of the four tool
-  directories, in sync with the canonical file.
+  directories, in sync with the canonical file. Shim sync is verifiable with
+  `uv run memos doctor` ([cli.md](cli.md)).
 - No shim is hand-edited; `shimify` reproduces them exactly.
 - Skill names follow the three-part shape and match their folder name.

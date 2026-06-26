@@ -24,6 +24,7 @@ on its topic, so behaviour stays consistent across every project.
 ## Success criteria
 
 - Every file in `rules/` has exactly one matching entry in `AGENTS.md`, and every
-  entry links to an existing file.
+  entry links to an existing file. Index↔rules sync is verifiable with
+  `uv run memos doctor` ([cli.md](cli.md)).
 - A reader can find the rule for any topic from the index in one hop.
 - Rules are written in English ([language.md](../../../rules/language.md)).

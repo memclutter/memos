@@ -1,6 +1,6 @@
 ---
 id: 002-doctor-command
-status: active
+status: done
 created: 2026-06-26
 updated: 2026-06-26
 depends-on: 001-migrate-cli-to-package
@@ -32,6 +32,6 @@ the OS and exits non-zero when any fails. Builds on the packaged CLI from task
   from the repo root.
 - [x] 8. Green check: `uv run memos doctor` exits `0`, and ruff/mypy/pytest pass.
   ⚠️ gate — confirm a clean repo is fully green before Finish.
-- [ ] 9. (Finish, via `sys.task.finish`) fold the delta into `spec/`: `cli.md`
+- [x] 9. (Finish, via `sys.task.finish`) fold the delta into `spec/`: `cli.md`
   gains `doctor`; new `spec/ci.md`; `overview.md` indexes `ci.md`; `skills.md`
   /`rules.md` note the invariant is now checkable.
