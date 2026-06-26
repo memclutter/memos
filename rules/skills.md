@@ -94,6 +94,10 @@ uv run scripts/memos shimify          # regenerate all shims for all tools
 Run it after adding or changing a skill. See [scripts.md](scripts.md) for the
 `scripts/memos` CLI.
 
+A tool scans its skill directory at startup, not on the fly, so after running
+`shimify` **reload skills in your IDE/agent** for new or renamed skills to appear
+(in Claude Code: `/reload-skills`, or restart the session).
+
 ## Conventions
 
 - Skills are written in English like every other record.
