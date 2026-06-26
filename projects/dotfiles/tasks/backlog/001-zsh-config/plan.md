@@ -137,6 +137,25 @@ applies aliases and guarded PATH additions.
 - **No host-specific values requiring templates** are introduced; if one appears,
   stop and route it through task 002 (per spec Boundaries).
 
+## Migration on existing machines
+
+`~/.zshrc` is currently unmanaged, so the first `chezmoi apply` after this lands
+**overwrites** it with the generated `dot_zshrc` (chezmoi replaces, never
+merges). The implementation must therefore reproduce the **actual install paths**
+already in use on the owner's machines, not idealised defaults:
+
+- Go: `GOPATH=$HOME/go1.24` and `$HOME/Projects/vendors/golang/go1.24/bin`.
+- NVM: `$HOME/Projects/vendors/nvm` (not the default `$HOME/.nvm`).
+- PostgreSQL, Android SDK, Yandex Cloud, opencode, LM Studio: keep their existing
+  locations, only swapping `/home/memclutter/...` for `$HOME/...` and wrapping
+  each in an existence guard.
+
+If `dot_zshrc` "tidies" these to standard locations, the guards (`[ -d ... ]`)
+silently evaluate false on the existing machines and those tools drop off `PATH`
+with no error — a quiet regression. Preserving the real paths is a correctness
+requirement, verified in step 3 below. (Oh My Zsh itself is safe: chezmoi only
+clones `~/.oh-my-zsh` when absent, so existing installs are left untouched.)
+
 ## Testing strategy
 
 Prove the spec's success criteria with a real apply, not just inspection:
