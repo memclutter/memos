@@ -20,27 +20,27 @@ Acceptance: no `repo/` submodule remains, new projects scaffold under
 
 ## Tasks breakdown
 
-- [ ] 1. Rewrite `rules/projects.md`: anatomy diagram and prose use
+- [x] 1. Rewrite `rules/projects.md`: anatomy diagram and prose use
   `projects/<name>/vcs/<repo-name>/` (one or many repos), the `vcs:` frontmatter
   list, the `self: true` exception (no `vcs/` folder), and the "Add a project"
   snippet `git submodule add <url> projects/<name>/vcs/<repo-name>`.
-- [ ] 2. Reword the `repo/` references in `rules/repo-structure.md` and the
+- [x] 2. Reword the `repo/` references in `rules/repo-structure.md` and the
   **Projects** paragraph of the root `AGENTS.md` to the `vcs/<repo-name>/` layout.
-- [ ] 3. Update the `sys.project.specify` skill: step 2 submodule path →
+- [x] 3. Update the `sys.project.specify` skill: step 2 submodule path →
   `vcs/<repo-name>/` and the frontmatter template `repo:` → `vcs:` list; bump its
   `version`. Then run `uv run memos shimify` (never hand-edit shims).
-- [ ] 4. Convert project metadata to the `vcs:` array: `projects/dotfiles/AGENTS.md`
+- [x] 4. Convert project metadata to the `vcs:` array: `projects/dotfiles/AGENTS.md`
   (+ `README.md` `repo/` refs) and `projects/memos/AGENTS.md` (self note: `vcs:`
   URL but no `vcs/` folder).
-- [ ] 5. Migrate the submodule: `git mv projects/dotfiles/repo
+- [x] 5. Migrate the submodule: `git mv projects/dotfiles/repo
   projects/dotfiles/vcs/dotfiles`; verify `.gitmodules` path **and** section name
   are updated and `git submodule status` shows the same pinned commit (`2b334c0`).
-- [ ] 6. Add `check_project_layout` to `scripts/memos/src/memos/doctor.py` and
+- [x] 6. Add `check_project_layout` to `scripts/memos/src/memos/doctor.py` and
   register it in `_CHECKS`: every non-`self` project has no `repo/` and all its
   `.gitmodules` paths sit under `projects/<name>/vcs/`.
-- [ ] 7. Cover the check in `scripts/memos/tests/test_doctor.py` (healthy `vcs/`
+- [x] 7. Cover the check in `scripts/memos/tests/test_doctor.py` (healthy `vcs/`
   passes, a `repo/` path fails); run `uv run ruff check`, `uv run mypy`,
   `uv run pytest` green.
-- [ ] 8. Verify end to end: repo-wide grep finds no stale `repo/` submodule
+- [x] 8. Verify end to end: repo-wide grep finds no stale `repo/` submodule
   references; `uv run memos doctor` passes; `git submodule update --init` (fresh)
   populates `vcs/dotfiles/`.
