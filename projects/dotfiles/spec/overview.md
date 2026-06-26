@@ -4,10 +4,10 @@
 
 A personal, version-controlled set of dotfiles that gives the owner a consistent
 development environment on any machine with a single `chezmoi apply`. Today it
-covers Git and Vim; the intent is to grow into the broader shell/dev environment
-(e.g. a shell like zsh, a multiplexer like tmux, and a bootstrap/install flow)
-so a fresh machine can be brought up to the owner's setup quickly. New configs
-are added one tool at a time, each as a deliberate, reviewed addition.
+covers Git, Vim, and the zsh shell (with Oh My Zsh); the intent is to grow into
+the broader dev environment (e.g. a multiplexer like tmux and a bootstrap/install
+flow) so a fresh machine can be brought up to the owner's setup quickly. New
+configs are added one tool at a time, each as a deliberate, reviewed addition.
 
 ## Capabilities
 

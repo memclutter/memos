@@ -1,6 +1,6 @@
 ---
 id: 001-zsh-config
-status: active
+status: done
 created: 2026-06-26
 updated: 2026-06-26
 ---
@@ -35,7 +35,7 @@ bumped submodule commit.
   `alias dc` → `docker compose`; `grep -R memclutter dot_zshrc
   .chezmoiexternal.toml` is empty; guarded paths skip cleanly when a tool dir is
   absent.  ⚠️ run the real `chezmoi apply` on the owner's machine — confirm first.
-- [ ] 5. Commit & push inside `vcs/dotfiles/`, then bump the submodule pin in
+- [x] 5. Commit & push inside `vcs/dotfiles/`, then bump the submodule pin in
   this OS repo (`chore(submodule): bump dotfiles`).
 
 The `spec/configs.md` + `spec/overview.md` updates are folded by the Finish gate
