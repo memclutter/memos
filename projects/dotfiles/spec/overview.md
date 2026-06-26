@@ -21,6 +21,8 @@ configs are added one tool at a time, each as a deliberate, reviewed addition.
 - Every managed file uses chezmoi's source-state naming (`dot_<name>`).
 - Configs are portable: applying them on a fresh machine yields a working,
   host-independent setup.
+- Applying the repo yields a home containing only the owner's intended dotfiles;
+  repository metadata (`README.md`, `LICENSE`) is excluded from deployment.
 
 ## Boundaries
 

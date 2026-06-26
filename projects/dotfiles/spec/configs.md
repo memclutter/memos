@@ -22,6 +22,10 @@ dependency, Oh My Zsh, is declared in `.chezmoiexternal.toml` and cloned by
 chezmoi to `~/.oh-my-zsh` on first apply (no refresh period — the framework
 self-updates).
 
+The repo root also holds repository metadata (`README.md`, `LICENSE`) for
+GitHub. These are excluded from deployment via `.chezmoiignore`, so `chezmoi
+apply` keeps them in the repo but never places them in `$HOME`.
+
 ### Git config (`dot_gitconfig`)
 
 - `[user]` — owner identity: `name = Memory Clutter`, `email = memclutter@gmail.com`,
@@ -58,3 +62,5 @@ self-updates).
 - Vim indents with 4 spaces and inserts spaces instead of tab characters.
 - A fresh interactive zsh session sources `~/.zshrc` without errors or warnings,
   and `dc` resolves to `docker compose`.
+- `chezmoi apply` never materialises `~/README.md` or `~/LICENSE`; repository
+  metadata stays in the repo only (`chezmoi managed` does not list them).

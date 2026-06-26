@@ -1,6 +1,6 @@
 ---
 id: 003-ignore-repo-meta-files
-status: active
+status: done
 created: 2026-06-26
 updated: 2026-06-26
 ---
