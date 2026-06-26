@@ -8,7 +8,7 @@ description: Create a project and write its living product spec in one step —
 category: sys
 entity: project
 action: specify
-version: 0.2.0
+version: 0.2.1
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
@@ -28,27 +28,38 @@ file in English.
 > aspirational behaviour here — that belongs in a task's delta `spec.md` until it
 > ships. See [sdd.md](../../rules/sdd.md).
 
-## 1. New project or existing one?
+## 1. Which starting state?
 
 ```bash
-ls -1 projects/ 2>/dev/null   # existing projects
+ls -1 projects/ 2>/dev/null   # existing project folders under this OS
 ```
 
-- **Argument given / existing project** → skip to step 3 to refresh its spec.
-- **Existing project chosen** (scan and ask via the user-question tool; never
-  guess) → step 3.
-- **New project** → do step 2 first to create it, then step 3.
+Three cases, distinguished by whether the project folder and the GitHub repo
+already exist:
+
+- **Refresh** — the project already lives under `projects/<name>/`. Skip step 2;
+  go to step 3 to amend its living spec. (Scan and ask via the user-question
+  tool; never guess which project.)
+- **Import** — no `projects/<name>/` folder yet, but the GitHub repo already
+  exists (the owner is bringing an existing repo under this OS). Do step 2 — its
+  `gh repo view … || gh repo create` guard skips creation, and `git submodule
+  add` pulls in the existing repo — then reverse-engineer the spec from `repo/`
+  in step 3.
+- **New** — neither the folder nor the repo exists. Do step 2 to create the repo
+  and scaffold, then step 3.
 
 ```bash
 ls -1 projects/<project>/spec/ 2>/dev/null   # does a living spec already exist?
 ```
 
 If `spec/` already has content, step 3 is a **refresh**: read it and amend rather
-than overwrite. If it's empty/absent, it's a **bootstrap**.
+than overwrite. If it's empty/absent (New or Import), it's a **bootstrap**.
 
-## 2. Create the project (new projects only)
+## 2. Create or import the project (New and Import)
 
-Resolve inputs, refusing a `name` that already exists under `projects/`:
+Resolve inputs, refusing a `name` that already exists under `projects/`. For an
+**Import**, the repo already holds reality — `description`/`stack` should reflect
+what's actually there:
 
 - **name** — kebab-case project name (also the GitHub repo name). If not given, ask.
 - **description** — one sentence for README/About. If not given, ask.
