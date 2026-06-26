@@ -1,5 +1,6 @@
 # memos
 
+[![CI](https://github.com/memclutter/memos/actions/workflows/ci.yml/badge.svg)](https://github.com/memclutter/memos/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/memclutter/memos?sort=semver)](https://github.com/memclutter/memos/releases)
 [![Last commit](https://img.shields.io/github/last-commit/memclutter/memos)](https://github.com/memclutter/memos/commits/main)
