@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: memos-doctor
+        name: memos doctor
+        entry: uv run memos doctor
+        language: system
+        pass_filenames: false
+        always_run: true

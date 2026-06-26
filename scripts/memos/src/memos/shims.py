@@ -6,6 +6,7 @@ points back to the canonical file. Shim generation is split into a pure
 ``compute_shims`` (path -> content, no I/O) and ``write_shims`` (the side effects),
 so the output can be checked without touching the filesystem.
 """
+
 from __future__ import annotations
 
 import os

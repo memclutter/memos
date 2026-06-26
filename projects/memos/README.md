@@ -16,3 +16,14 @@ tasks and docs.
 
 See the root [README.md](../../README.md) and [AGENTS.md](../../AGENTS.md) for
 what the OS is and how it is structured.
+
+## Local checks
+
+Consistency is enforced by `uv run memos doctor` (shims in sync, rules indexed).
+Install the pre-commit hook so it runs before each commit:
+
+```bash
+pre-commit install
+```
+
+CI runs the same `doctor` check plus the package's lint/type/test suite.

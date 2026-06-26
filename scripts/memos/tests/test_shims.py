@@ -4,6 +4,7 @@ The headline guarantee of the CLI migration is that shim generation is unchanged
 ``compute_shims`` over the real repo must equal the bytes already on disk. The
 round-trip test exercises generation and drift detection on a throwaway repo.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -27,11 +28,7 @@ def _make_repo(root: Path) -> None:
     skill = root / "skills" / "demo.thing.do"
     skill.mkdir(parents=True)
     (skill / "SKILL.md").write_text(
-        "---\n"
-        "name: demo.thing.do\n"
-        "description: Demo skill.\n"
-        "---\n\n"
-        "Body.\n"
+        "---\nname: demo.thing.do\ndescription: Demo skill.\n---\n\nBody.\n"
     )
 
 
