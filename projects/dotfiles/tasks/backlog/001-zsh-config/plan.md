@@ -51,16 +51,13 @@ project `AGENTS.md` requires.
 [".oh-my-zsh"]
     type = "git-repo"
     url = "https://github.com/ohmyzsh/ohmyzsh.git"
-    refreshPeriod = "168h"
 ```
 
-- `type = "git-repo"` clones the repo to `~/.oh-my-zsh` on first apply and
-  pulls on later applies.
-- `refreshPeriod = "168h"` (7 days) bounds how often chezmoi refetches, so apply
-  stays fast.
-- Because chezmoi owns Oh My Zsh updates, `dot_zshrc` **disables Oh My Zsh's own
-  auto-update** with `zstyle ':omz:update' mode disabled` to avoid two updaters
-  fighting.
+- `type = "git-repo"` clones the repo to `~/.oh-my-zsh` on first apply.
+- No `refreshPeriod` is set: chezmoi's job is the initial clone, and Oh My Zsh's
+  own auto-update keeps the framework current thereafter. So `dot_zshrc` leaves
+  Oh My Zsh's built-in updater **enabled** (no `zstyle ':omz:update' mode
+  disabled`) — the framework owns its own updates.
 
 ### `dot_zshrc` shape
 
@@ -68,8 +65,8 @@ Ordered sections:
 
 1. Base PATH (`$HOME/bin`, `$HOME/.local/bin`, `/usr/local/bin`).
 2. Oh My Zsh scaffold: `export ZSH="$HOME/.oh-my-zsh"`,
-   `ZSH_THEME="robbyrussell"`, `zstyle ':omz:update' mode disabled`,
-   `plugins=(git)`, `source $ZSH/oh-my-zsh.sh`.
+   `ZSH_THEME="robbyrussell"`, `plugins=(git)`, `source $ZSH/oh-my-zsh.sh`
+   (Oh My Zsh's auto-update left at its default — enabled).
 3. Docker Compose aliases (verbatim — already portable).
 4. Guarded tool PATH blocks, each of the form:
 
@@ -85,8 +82,8 @@ Ordered sections:
 
 ### Data flow
 
-`chezmoi apply` → (a) reads `.chezmoiexternal.toml`, clones/refreshes
-`~/.oh-my-zsh`; (b) renders `dot_zshrc` to `~/.zshrc`. A new login/interactive
+`chezmoi apply` → (a) reads `.chezmoiexternal.toml`, clones `~/.oh-my-zsh` if
+absent; (b) renders `dot_zshrc` to `~/.zshrc`. A new login/interactive
 zsh sources `~/.zshrc`, which sources `$ZSH/oh-my-zsh.sh` (now present), then
 applies aliases and guarded PATH additions.
 
@@ -95,7 +92,8 @@ applies aliases and guarded PATH additions.
 - `spec/configs.md`: add `dot_zshrc → ~/.zshrc` to Deployment, a "Zsh config
   (`dot_zshrc`)" Behaviour subsection (Oh My Zsh via external, theme, git plugin,
   Docker aliases, guarded tool PATHs), and zsh success criteria. Document
-  `.chezmoiexternal.toml` as the mechanism for the Oh My Zsh external.
+  `.chezmoiexternal.toml` as the mechanism for the Oh My Zsh external (clone
+  only; Oh My Zsh self-updates).
 - `spec/overview.md`: zsh moves from vision aspiration to shipped capability.
 
 ## Trade-offs & alternatives
@@ -131,8 +129,9 @@ applies aliases and guarded PATH additions.
   missing and the `source` line will warn. Acceptable (documented assumption:
   fresh-machine setup is online); the source line can stay guarded if we want to
   be strict.
-- **Two updaters:** mitigated by disabling Oh My Zsh auto-update so chezmoi's
-  `refreshPeriod` is the single update path.
+- **Update ownership:** chezmoi only performs the initial clone (no
+  `refreshPeriod`); Oh My Zsh's built-in auto-update is the single update path, so
+  there are no competing updaters.
 - **Secrets:** none in the current `~/.zshrc`; keep it that way
   ([git.md](../../../../rules/git.md)).
 - **No host-specific values requiring templates** are introduced; if one appears,
