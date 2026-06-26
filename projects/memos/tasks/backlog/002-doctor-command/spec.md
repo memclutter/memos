@@ -1,4 +1,4 @@
-# Spec — 001-doctor-command
+# Spec — 002-doctor-command
 
 ## Problem
 
@@ -24,7 +24,7 @@ and pull request.
 
 ## User journeys
 
-- The owner (or CI) runs `uv run scripts/memos doctor`. On a clean repo it prints
+- The owner (or CI) runs `uv run memos doctor`. On a clean repo it prints
   an OK summary and exits 0.
 - After adding a skill but forgetting `shimify`, `doctor` lists the missing shims
   per tool and exits non-zero.
@@ -38,7 +38,7 @@ and pull request.
 
 ## Success criteria
 
-- `uv run scripts/memos doctor` exits 0 on the current (clean) repo.
+- `uv run memos doctor` exits 0 on the current (clean) repo.
 - **Shim check:** for every folder in `skills/`, a shim exists in each of
   `.claude/skills/<name>/`, `.cursor/skills/<name>/`, `.codex/skills/<name>/`,
   `.opencode/skills/<name>/`, and each shim references the canonical
@@ -51,9 +51,9 @@ and pull request.
   first failure).
 - The command is covered by tests.
 - **pre-commit:** a committed `.pre-commit-config.yaml` defines a hook that runs
-  `uv run scripts/memos doctor`; with pre-commit installed, a commit that breaks
+  `uv run memos doctor`; with pre-commit installed, a commit that breaks
   an invariant is blocked.
-- **CI:** a committed GitHub Actions workflow runs `uv run scripts/memos doctor`
+- **CI:** a committed GitHub Actions workflow runs `uv run memos doctor`
   on push and pull request, and fails the job on a non-zero exit.
 
 ## Affected spec sections

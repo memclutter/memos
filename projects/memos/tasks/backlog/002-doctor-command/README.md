@@ -1,4 +1,4 @@
-# 001 — `memos doctor` command
+# 002 — `memos doctor` command
 
 Add a `doctor` subcommand to the `memos` CLI that checks the OS's internal
 consistency and reports problems.
