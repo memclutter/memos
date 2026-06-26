@@ -80,9 +80,7 @@ def check_project_layout(root: Path) -> list[str]:
 
     gitmodules = root / ".gitmodules"
     paths = (
-        _GITMODULES_PATH.findall(gitmodules.read_text())
-        if gitmodules.is_file()
-        else []
+        _GITMODULES_PATH.findall(gitmodules.read_text()) if gitmodules.is_file() else []
     )
 
     problems: list[str] = []

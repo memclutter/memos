@@ -1,6 +1,24 @@
 repos:
   - repo: local
     hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: bash -c 'cd scripts/memos && uv run ruff check .'
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: ruff-format
+        name: ruff format --check
+        entry: bash -c 'cd scripts/memos && uv run ruff format --check .'
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: mypy
+        name: mypy
+        entry: bash -c 'cd scripts/memos && uv run mypy'
+        language: system
+        pass_filenames: false
+        always_run: true
       - id: memos-doctor
         name: memos doctor
         entry: uv run memos doctor
