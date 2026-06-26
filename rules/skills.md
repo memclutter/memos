@@ -1,20 +1,101 @@
 # Skills
 
-`skills/` holds **agent skills** that are available to the agent working in this
-OS. A skill packages reusable instructions (and optional scripts) for a recurring
-job, so the agent can invoke it instead of re-deriving the steps each time.
+`skills/` holds **agent skills** — reusable, named procedures the agent can
+invoke instead of re-deriving steps each time. `skills/` is the **canonical**
+home; per-tool copies are generated shims (see below).
 
 ```
 skills/
-└── <skill-name>/
-    └── SKILL.md     # the skill definition (frontmatter + instructions)
+└── <category>.<entity>.<action>/
+    └── SKILL.md      # canonical skill: frontmatter + instructions
 ```
 
-- One folder per skill, named in kebab-case.
-- `SKILL.md` carries YAML frontmatter with at least a `name` and a `description`
-  (the description is what the agent matches against to decide relevance), then
-  the instructions in the body. Supporting files (scripts, templates) live
-  alongside it in the skill folder.
+## Naming
+
+A skill name is `{category}.{entity}.{action}` (lowercase, dot-separated). The
+folder is named exactly the same.
+
+- `category` — area the skill belongs to. `sys` = managing this OS itself.
+- `entity` — the thing it acts on (`project`, `task`, …).
+- `action` — what it does (`create`, …).
+
+Examples:
+
+- `sys.project.create` — create a project in the OS (folder, `README.md`,
+  `AGENTS.md`, `repo/` submodule, `tasks/`, `docs/`).
+- `sys.task.create` — create a task inside a project.
+
+New categories/entities are added as the OS grows; keep the three-part shape.
+
+## Project-scoped skills resolve the project
+
+A skill that acts on a project (e.g. `sys.task.create`) takes the project as an
+argument. **If it is not provided, the skill scans `projects/` and asks the
+owner to pick one** via the available user-question tool before continuing. It
+never guesses the project.
+
+## Canonical `SKILL.md` frontmatter
+
+The canonical file carries only **general** metadata — nothing tool-specific:
+
+```markdown
+---
+name: sys.project.create
+description: Create a new project in the OS — scaffold its folder, README,
+  AGENTS.md, repo submodule, tasks, and docs.
+category: sys
+entity: project
+action: create
+version: 0.1.0
+---
+
+Step-by-step instructions for the agent…
+```
+
+The `description` is what an agent matches against to decide relevance — make it
+specific. Supporting files (scripts, templates) live alongside `SKILL.md` in the
+skill folder.
+
+## Shims for AI IDEs / agents
+
+Different tools discover skills in their own directories. We do **not** maintain
+copies by hand — each tool gets a generated **shim** that points back to the
+canonical file. A shim is a thin `SKILL.md` whose body says: *read and follow
+the canonical instructions at `skills/<name>/SKILL.md`*, carrying no logic of its
+own.
+
+Shim targets (one per supported tool):
+
+| Tool        | Shim location                          |
+|-------------|----------------------------------------|
+| Claude Code | `.claude/skills/<name>/SKILL.md`       |
+| Cursor      | `.cursor/skills/<name>/SKILL.md`       |
+| OpenCode    | `.opencode/skills/<name>/SKILL.md`     |
+| Codex       | `.codex/skills/<name>/SKILL.md`        |
+
+Frontmatter strategy:
+
+- **Canonical** `skills/<name>/SKILL.md` → general fields only.
+- **Shim** → general fields **plus** the keys that specific tool understands
+  (e.g. Claude's `allowed-tools`). The general fields come from the canonical
+  file; the tool-specific keys are added by the generator.
+
+The shim directories are **generated artifacts** — edit the canonical skill, not
+the shims.
+
+## Generating shims
+
+Shims are produced by the `shimify` command of the OS CLI, run through `uv`:
+
+```bash
+uv run scripts/memos shimify          # regenerate all shims for all tools
+```
+
+Run it after adding or changing a skill. See [scripts.md](scripts.md) for the
+`scripts/memos` CLI.
+
+## Conventions
+
 - Skills are written in English like every other record.
-- Add a skill when a multi-step job recurs across projects (e.g. scaffolding a
-  new project, bootstrapping CI, cutting a release).
+- One folder per skill; folder name == `name` == `{category}.{entity}.{action}`.
+- Add a skill when a multi-step job recurs; bump `version` (SemVer) on change.
