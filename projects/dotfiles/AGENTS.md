@@ -1,6 +1,7 @@
 ---
 name: dotfiles
-repo: git@github.com:memclutter/dotfiles.git
+vcs:
+  - git@github.com:memclutter/dotfiles.git
 self: false
 status: active
 stack: [chezmoi]
@@ -26,5 +27,5 @@ environment, plus the chezmoi source-state convention that maps them to `$HOME`.
   unless gated by chezmoi templates.
 - The `[user]` identity in `dot_gitconfig` is the owner's
   (`memclutter@gmail.com`, `Memory Clutter`).
-- Source changes are committed and pushed inside `repo/`, then this OS pins the
-  new submodule commit (`chore(submodule): bump dotfiles`).
+- Source changes are committed and pushed inside `vcs/dotfiles/`, then this OS
+  pins the new submodule commit (`chore(submodule): bump dotfiles`).

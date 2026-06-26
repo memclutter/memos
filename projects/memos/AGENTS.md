@@ -1,6 +1,7 @@
 ---
 name: memos
-repo: git@github.com:memclutter/memos.git
+vcs:
+  - git@github.com:memclutter/memos.git
 self: true
 status: active
 stack: [python]
@@ -8,9 +9,9 @@ created: 2026-06-26
 ---
 
 The `memos` project is **the OS itself** — this repository. It is a
-self-referential project, so it is exempt from the `repo/` submodule rule
-(`self: true`): there is no `projects/memos/repo/`. Its source lives at the OS
-repo root.
+self-referential project, so it is exempt from the `vcs/` submodule rule
+(`self: true`): there is no `projects/memos/vcs/` folder, and the `vcs:` entry
+above is informational only. Its source lives at the OS repo root.
 
 ## What lives where (for this project)
 

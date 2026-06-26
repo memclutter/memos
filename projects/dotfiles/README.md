@@ -22,5 +22,6 @@ chezmoi apply
 
 This is a project under the [memos](../..) operating system. The living product
 spec lives in [spec/](spec/); work happens as SDD tasks under
-[tasks/](tasks/) and lands in the upstream repo via the [repo/](repo/) submodule
+[tasks/](tasks/) and lands in the upstream repo via the
+[vcs/dotfiles/](vcs/dotfiles/) submodule
 (`git@github.com:memclutter/dotfiles.git`).
