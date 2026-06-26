@@ -54,11 +54,11 @@ on until the current one is validated. The phases map onto a task folder
   constraints.
 - **Tasks** turns the plan into a checklist of small steps. Don't mix unrelated
   concerns in one step (e.g. auth and schema changes).
-- **Implement** does the work in the project's `repo/`, one chunk at a time, each
-  iteration recorded in a `log/` folder.
+- **Implement** does the work in the project's repo under `vcs/<repo-name>/`, one
+  chunk at a time, each iteration recorded in a `log/` folder.
 - **Finish** (the closing gate, after Implement) folds the task's delta into the
-  living product spec: apply the `Target state` to `spec/`, verify `repo/` matches
-  it, then close the task. Done by `sys.task.finish`.
+  living product spec: apply the `Target state` to `spec/`, verify
+  `vcs/<repo-name>/` matches it, then close the task. Done by `sys.task.finish`.
 
 ## A good spec: six areas
 

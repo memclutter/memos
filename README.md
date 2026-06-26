@@ -35,7 +35,8 @@ project by project — it doubles as a way to learn.
     └── <project>/
         ├── README.md  # project description (humans)
         ├── AGENTS.md  # project description (agent, with metadata)
-        ├── repo/      # the project's git repository (submodule)
+        ├── vcs/       # the project's git repositories, each a submodule
+        │   └── <repo-name>/   # one folder per repo, named as on GitHub
         ├── tasks/     # tasks: backlog / active / done
         └── docs/      # project documentation
 ```

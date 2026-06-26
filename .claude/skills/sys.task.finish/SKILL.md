@@ -1,9 +1,9 @@
 ---
 name: sys.task.finish
 description: Close a task — fold its delta spec.md Target state into the project's
-  living spec (projects/<name>/spec/), verify repo/ matches, flip status to done,
-  move the folder to done/, and commit. The SDD merge-on-done Finish gate. Use when
-  a task's implementation is complete and validated.
+  living spec (projects/<name>/spec/), verify vcs/<repo-name>/ matches, flip status
+  to done, move the folder to done/, and commit. The SDD merge-on-done Finish gate.
+  Use when a task's implementation is complete and validated.
 allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
 ---
 

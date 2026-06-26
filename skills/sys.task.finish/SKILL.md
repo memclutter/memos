@@ -1,13 +1,13 @@
 ---
 name: sys.task.finish
 description: Close a task — fold its delta spec.md Target state into the project's
-  living spec (projects/<name>/spec/), verify repo/ matches, flip status to done,
+  living spec (projects/<name>/spec/), verify vcs/<repo-name>/ matches, flip status to done,
   move the folder to done/, and commit. The SDD merge-on-done Finish gate. Use
   when a task's implementation is complete and validated.
 category: sys
 entity: task
 action: finish
-version: 0.1.0
+version: 0.1.1
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
@@ -34,8 +34,8 @@ every file in English.
 ## 2. Verify the work matches the spec
 
 - Confirm each `Success criterion` in `spec.md` is met. Where the project's
-  rules define checks (tests, lint), run them in `repo/` and require green.
-- Confirm the implementation in `repo/` actually delivers the `Target state`.
+  rules define checks (tests, lint), run them in `vcs/<repo-name>/` and require green.
+- Confirm the implementation in `vcs/<repo-name>/` actually delivers the `Target state`.
 - If anything is unmet, stop and report it to the owner — do not proceed.
 
 ## 3. Merge the delta into the living spec
@@ -72,9 +72,9 @@ git add -A
 git commit -m "feat(task): finish <project>/<NNN>-<slug>"
 ```
 
-For a non-`self` project, the implementation commits live in `repo/`; if `repo/`
-advanced, also bump the submodule pointer with a
-`chore(submodule): bump <project>` commit (see [projects.md](../../rules/projects.md)).
+For a non-`self` project, the implementation commits live in `vcs/<repo-name>/`;
+if that submodule advanced, also bump its pointer with a
+`chore(submodule): bump <repo-name>` commit (see [projects.md](../../rules/projects.md)).
 The commit is the record — there is no separate log file ([history.md](../../rules/history.md)).
 
 Then tell the owner (in Russian) that the task is done and the living spec is

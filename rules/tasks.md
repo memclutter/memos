@@ -65,12 +65,12 @@ Agent-facing spec: precise goal, scope, acceptance criteria, and constraints.
 3. **Tasks (breakdown).** `sys.task.breakdown` slices spec + plan into a
    reviewable checklist inside `AGENTS.md`.
 4. **Start.** Move the folder to `active/`; set `status: active`.
-5. **Implement.** Do the work in the project's `repo/`, one chunk at a time. Each
-   run/iteration adds a new `log/{NNN}-...` folder with its artifacts and a
-   summary `README.md`.
+5. **Implement.** Do the work in the project's repo under `vcs/<repo-name>/`, one
+   chunk at a time. Each run/iteration adds a new `log/{NNN}-...` folder with its
+   artifacts and a summary `README.md`.
 6. **Finish.** `sys.task.finish` folds the task's delta into the project's living
    spec: apply the spec.md `Target state` to `projects/<name>/spec/`, verify
-   `repo/` matches the updated spec, set `status: done`, move the folder to
+   `vcs/<repo-name>/` matches the updated spec, set `status: done`, move the folder to
    `done/`, and commit. The done task keeps its delta spec.md as history; the
    commit is the record — there is no separate log file (see
    [history.md](history.md)).

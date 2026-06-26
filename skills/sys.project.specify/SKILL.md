@@ -1,14 +1,14 @@
 ---
 name: sys.project.specify
 description: Create a project and write its living product spec in one step —
-  scaffold projects/<name>/ (README.md, AGENTS.md, repo/ submodule, tasks/, docs/)
+  scaffold projects/<name>/ (README.md, AGENTS.md, vcs/<repo-name>/ submodule(s), tasks/, docs/)
   and projects/<name>/spec/ (overview.md + one file per capability) describing
   what the product does now. The project-level SDD Specify phase. Use to start a
   new project or to refresh an existing project's living spec.
 category: sys
 entity: project
 action: specify
-version: 0.3.0
+version: 0.3.1
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
@@ -43,8 +43,8 @@ already exist:
 - **Import** — no `projects/<name>/` folder yet, but the GitHub repo already
   exists (the owner is bringing an existing repo under this OS). Do step 2 — its
   `gh repo view … || gh repo create` guard skips creation, and `git submodule
-  add` pulls in the existing repo — then reverse-engineer the spec from `repo/`
-  in step 3.
+  add` pulls in the existing repo — then reverse-engineer the spec from
+  `vcs/<repo-name>/` in step 3.
 - **New** — neither the folder nor the repo exists. Do step 2 to create the repo
   and scaffold, then step 3.
 
@@ -111,8 +111,9 @@ The living spec must match reality, so gather it from real sources, not guesses:
 
 - Read the project's `AGENTS.md` (purpose, architecture, conventions) and
   `README.md`.
-- For an existing product, inspect `repo/` — entry points, routes/commands,
-  models, and any existing docs — to reverse-engineer what it actually does.
+- For an existing product, inspect its repo(s) under `vcs/<repo-name>/` — entry
+  points, routes/commands, models, and any existing docs — to reverse-engineer
+  what it actually does.
 - For a brand-new project with no code yet, capture the agreed initial scope
   from the owner; keep it to what the first release will genuinely ship.
 
@@ -178,7 +179,7 @@ git commit -m "feat(project): refresh <project> living spec"
 ```
 
 For a `self: true` project (the OS itself), the spec lives at
-`projects/memos/spec/` and changes commit directly — there is no `repo/` submodule
+`projects/memos/spec/` and changes commit directly — there is no `vcs/` submodule
 to add.
 
 Then tell the owner (in Russian) where the living spec lives and that tasks will

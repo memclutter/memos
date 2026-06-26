@@ -22,8 +22,8 @@ folder is named exactly the same.
 Examples:
 
 - `sys.project.specify` — create a project in the OS (folder, `README.md`,
-  `AGENTS.md`, `repo/` submodule, `tasks/`, `docs/`) and write its living
-  product spec under `spec/`.
+  `AGENTS.md`, `vcs/<repo-name>/` submodule(s), `tasks/`, `docs/`) and write its
+  living product spec under `spec/`.
 - `sys.task.specify` — create a task inside a project and write its `spec.md`.
 
 New categories/entities are added as the OS grows; keep the three-part shape.

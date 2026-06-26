@@ -3,11 +3,11 @@ name: sys.project.release
 description: Cut a SemVer release for a repo — pick the next version, build
   release notes from Conventional Commits since the last tag, create and push an
   annotated tag, and publish a GitHub release with gh. Works for the OS repo or a
-  project's repo/. Use when the owner wants to ship a new version.
+  project's repo under vcs/<repo-name>/. Use when the owner wants to ship a new version.
 category: sys
 entity: project
 action: release
-version: 0.1.0
+version: 0.1.1
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
@@ -22,9 +22,9 @@ Russian; write every artifact (tag message, notes, changelog) in English.
 ## 1. Resolve the target repo
 
 - **Default:** the OS repo itself (the current working directory root).
-- **A project:** if the owner names one, work inside `projects/<name>/repo/`
-  (its own git repo + GitHub remote). Scan `projects/` and ask if ambiguous;
-  never guess.
+- **A project:** if the owner names one, work inside its repo under
+  `projects/<name>/vcs/<repo-name>/` (its own git repo + GitHub remote). Scan
+  `projects/` and ask which repo if ambiguous; never guess.
 
 Run the rest of the steps in that repo's root.
 
