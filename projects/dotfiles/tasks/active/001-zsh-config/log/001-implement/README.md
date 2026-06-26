@@ -29,10 +29,17 @@ non-destructively. Steps 5 (commit/push + submodule bump) and the spec fold
 - `grep memclutter dot_zshrc .chezmoiexternal.toml` → empty (no personal
   literals).
 
-## Note
+## Follow-up (same iteration)
 
-`chezmoi diff` also surfaced an unrelated discrepancy: the live `~/.gitconfig`
-carries `signingkey` and `[init] defaultBranch = main` that are absent from the
-repo's `dot_gitconfig`, so a full `chezmoi apply` would drop them. Out of scope
-here; the zsh migration should be applied scoped (`chezmoi apply ~/.zshrc`). The
-owner handles the backup before applying on each machine.
+On owner review:
+
+- **Comments restored** — the original Oh My Zsh / user-config comments were put
+  back into `dot_zshrc`; the portability guards and `$HOME` rewrites are kept.
+- **gitconfig discrepancy resolved** — `chezmoi diff` had shown the live
+  `~/.gitconfig` carrying `signingkey` and `[init] defaultBranch = main` absent
+  from the repo. Both were added to `dot_gitconfig` (the `signingkey` is the
+  public GPG key id, not a secret), so `chezmoi apply` no longer drops them; the
+  remaining diff is cosmetic (indentation + section order).
+
+The owner handles the backup before applying on each machine. Note: the dotfiles
+repo enforces verified signatures, so commits in `vcs/dotfiles` are GPG-signed.
