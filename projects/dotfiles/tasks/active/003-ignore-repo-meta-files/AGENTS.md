@@ -1,6 +1,6 @@
 ---
 id: 003-ignore-repo-meta-files
-status: backlog
+status: active
 created: 2026-06-26
 updated: 2026-06-26
 ---
@@ -17,16 +17,16 @@ fresh apply yields only intended dotfiles in `$HOME`. The mechanism (e.g.
 All source changes happen inside `vcs/dotfiles/`; this OS repo only pins the
 bumped submodule commit.
 
-- [ ] 1. Add `.chezmoiignore` at the repo root with `README.md` and `LICENSE`
+- [x] 1. Add `.chezmoiignore` at the repo root with `README.md` and `LICENSE`
   (bare names, matched against target paths). → exclusion criterion.
-- [ ] 2. Verify exclusion (non-destructive): `chezmoi -S <vcs/dotfiles> managed`
+- [x] 2. Verify exclusion (non-destructive): `chezmoi -S <vcs/dotfiles> managed`
   no longer lists `README.md` / `LICENSE`; `chezmoi -S <vcs/dotfiles> diff` shows
   no changes for them; the real dotfiles (`.gitconfig`, `.vimrc`, `.zshrc`) stay
   managed. → real-dotfiles-unaffected criterion.
-- [ ] 3. One-off cleanup: `rm -f ~/README.md ~/LICENSE`, then confirm a `chezmoi
+- [x] 3. One-off cleanup: `rm -f ~/README.md ~/LICENSE`, then confirm a `chezmoi
   apply` does not recreate them.  ⚠️ deletes files in `$HOME` — confirm with the
   owner first; touch only these two paths.
-- [ ] 4. Commit & push (GPG-signed) inside `vcs/dotfiles/`, then bump the
+- [x] 4. Commit & push (GPG-signed) inside `vcs/dotfiles/`, then bump the
   submodule pin in this OS repo.
 
 The `spec/configs.md` + `spec/overview.md` updates are folded by the Finish gate
