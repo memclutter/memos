@@ -25,8 +25,8 @@ in English.
 - If a project was given as an argument, use it.
 - Otherwise **scan `projects/`** for existing project folders and ask the owner
   to pick one via the user-question tool. Never guess.
-- If there are no projects yet, stop and offer to run `sys.project.create`
-  first.
+- If there are no projects yet, stop and offer to run `sys.project.specify`
+  first (it creates the project and its living spec).
 
 ```bash
 ls -1 projects/ 2>/dev/null   # the choices to offer

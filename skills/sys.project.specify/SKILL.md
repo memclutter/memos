@@ -1,13 +1,14 @@
 ---
 name: sys.project.specify
-description: Bootstrap or refresh a project's living product spec — scaffold
-  projects/<name>/spec/ (overview.md + one file per capability) describing what
-  the product does now. The project-level SDD Specify phase. Use to start the
-  living spec for a new project or reverse-engineer it for an existing one.
+description: Create a project and write its living product spec in one step —
+  scaffold projects/<name>/ (README.md, AGENTS.md, repo/ submodule, tasks/, docs/)
+  and projects/<name>/spec/ (overview.md + one file per capability) describing
+  what the product does now. The project-level SDD Specify phase. Use to start a
+  new project or to refresh an existing project's living spec.
 category: sys
 entity: project
 action: specify
-version: 0.1.0
+version: 0.2.0
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
@@ -16,30 +17,80 @@ x-shim:
 # sys.project.specify
 
 The **project-level Specify** phase of [Spec-Driven Development](../../rules/sdd.md):
-create the project's **living product spec** under `projects/<name>/spec/` — the
-single source of truth for *what the product does now*. Tasks later amend it with
-deltas (merge-on-done). Follows [projects.md](../../rules/projects.md). Talk to the
-owner in Russian; write every file in English.
+bring a project into being and give it a **living product spec** under
+`projects/<name>/spec/` — the single source of truth for *what the product does
+now*. Tasks later amend it with deltas (merge-on-done). One skill creates the
+project and specs it; there is no separate create step. Follows
+[projects.md](../../rules/projects.md). Talk to the owner in Russian; write every
+file in English.
 
 > The living spec holds **only shipped reality**. Do not write planned or
 > aspirational behaviour here — that belongs in a task's delta `spec.md` until it
 > ships. See [sdd.md](../../rules/sdd.md).
 
-## 1. Resolve the project
-
-- If a project was given as an argument, use it.
-- Otherwise **scan `projects/`** and ask the owner to pick one via the
-  user-question tool. Never guess.
+## 1. New project or existing one?
 
 ```bash
-ls -1 projects/ 2>/dev/null              # the choices to offer
+ls -1 projects/ 2>/dev/null   # existing projects
+```
+
+- **Argument given / existing project** → skip to step 3 to refresh its spec.
+- **Existing project chosen** (scan and ask via the user-question tool; never
+  guess) → step 3.
+- **New project** → do step 2 first to create it, then step 3.
+
+```bash
 ls -1 projects/<project>/spec/ 2>/dev/null   # does a living spec already exist?
 ```
 
-If `spec/` already has content, this is a **refresh**: read what's there and
-amend it rather than overwriting. If it's empty/absent, this is a **bootstrap**.
+If `spec/` already has content, step 3 is a **refresh**: read it and amend rather
+than overwrite. If it's empty/absent, it's a **bootstrap**.
 
-## 2. Establish the current truth
+## 2. Create the project (new projects only)
+
+Resolve inputs, refusing a `name` that already exists under `projects/`:
+
+- **name** — kebab-case project name (also the GitHub repo name). If not given, ask.
+- **description** — one sentence for README/About. If not given, ask.
+- **stack** — the [base stack](../../rules/stack.md) subset the project needs;
+  confirm if unclear.
+
+Ensure the GitHub repo exists (ask the owner before creating a public repo):
+
+```bash
+gh repo view memclutter/<name> >/dev/null 2>&1 \
+  || gh repo create memclutter/<name> --public \
+       --description "<description>" --add-readme
+```
+
+Scaffold the folder and submodule:
+
+```bash
+mkdir -p projects/<name>/{spec,tasks/{backlog,active,done},docs}
+git submodule add git@github.com:memclutter/<name>.git projects/<name>/repo
+touch projects/<name>/tasks/{backlog,active,done}/.gitkeep
+```
+
+Write the project files (see [projects.md](../../rules/projects.md)):
+
+- `projects/<name>/README.md` — human-facing: what the project is, how to run it
+  locally (Docker), how it fits the OS.
+- `projects/<name>/AGENTS.md` — agent-facing, with frontmatter exactly as in
+  [projects.md](../../rules/projects.md):
+
+  ```markdown
+  ---
+  name: <name>
+  repo: git@github.com:memclutter/<name>.git
+  status: active
+  stack: [<stack>]
+  created: <YYYY-MM-DD>
+  ---
+
+  Purpose, architecture notes, and project-specific conventions.
+  ```
+
+## 3. Establish the current truth
 
 The living spec must match reality, so gather it from real sources, not guesses:
 
@@ -52,18 +103,16 @@ The living spec must match reality, so gather it from real sources, not guesses:
 
 Confirm scope and the capability split with the owner before writing.
 
-## 3. Decide the capability split
+## 4. Decide the capability split
 
 `spec/` is conceptually one document, physically one file per capability/domain
 so it scales. Pick a small set of capability files (e.g. `auth.md`, `search.md`,
 `billing.md`) plus the always-present `overview.md`. Prefer few, cohesive files;
 split further only when one grows unwieldy.
 
-## 4. Write the living spec
+## 5. Write the living spec
 
-```bash
-mkdir -p projects/<project>/spec
-```
+`projects/<project>/spec/` already exists from step 2 (or from an earlier run).
 
 - `spec/overview.md` — the product as a whole:
 
@@ -104,16 +153,18 @@ mkdir -p projects/<project>/spec
 Reference the global rules instead of repeating them; write only the
 project-specific content.
 
-## 5. Commit
+## 6. Commit
 
 ```bash
 git add -A
-git commit -m "feat(project): specify <project> living spec"
+git commit -m "feat(project): specify <project>"     # new project + its living spec
+# or, refreshing an existing project's spec:
+git commit -m "feat(project): refresh <project> living spec"
 ```
 
 For a `self: true` project (the OS itself), the spec lives at
-`projects/memos/spec/` and changes commit directly — there is no submodule to
-bump.
+`projects/memos/spec/` and changes commit directly — there is no `repo/` submodule
+to add.
 
 Then tell the owner (in Russian) where the living spec lives and that tasks will
 now be written as deltas against it (`sys.task.specify`), folded back in at Finish

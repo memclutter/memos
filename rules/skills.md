@@ -21,8 +21,9 @@ folder is named exactly the same.
 
 Examples:
 
-- `sys.project.create` — create a project in the OS (folder, `README.md`,
-  `AGENTS.md`, `repo/` submodule, `tasks/`, `docs/`).
+- `sys.project.specify` — create a project in the OS (folder, `README.md`,
+  `AGENTS.md`, `repo/` submodule, `tasks/`, `docs/`) and write its living
+  product spec under `spec/`.
 - `sys.task.specify` — create a task inside a project and write its `spec.md`.
 
 New categories/entities are added as the OS grows; keep the three-part shape.
@@ -40,13 +41,13 @@ The canonical file carries only **general** metadata — nothing tool-specific:
 
 ```markdown
 ---
-name: sys.project.create
+name: sys.project.specify
 description: Create a new project in the OS — scaffold its folder, README,
-  AGENTS.md, repo submodule, tasks, and docs.
+  AGENTS.md, repo submodule, tasks, docs, and living product spec.
 category: sys
 entity: project
-action: create
-version: 0.1.0
+action: specify
+version: 0.2.0
 ---
 
 Step-by-step instructions for the agent…

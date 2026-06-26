@@ -60,12 +60,15 @@ working in `repo/`.
 
 ## Add a project
 
+Use the `sys.project.specify` skill — it creates the project and writes its
+living spec in one step. Under the hood it does:
+
 ```bash
 mkdir -p projects/<project-name>/{spec,tasks/{backlog,active,done},docs}
 git submodule add git@github.com:memclutter/<project-name>.git \
   projects/<project-name>/repo
-# then create projects/<project-name>/README.md and AGENTS.md,
-# and bootstrap spec/ with sys.project.specify
+# then write projects/<project-name>/README.md and AGENTS.md,
+# and the living spec under spec/
 ```
 
 Clone this OS with all submodules:
