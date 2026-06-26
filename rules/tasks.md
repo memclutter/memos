@@ -11,6 +11,8 @@ projects/<project-name>/tasks/
     └── 001-add-search/
         ├── README.md   # task description for humans
         ├── AGENTS.md   # task spec for the agent (frontmatter metadata)
+        ├── spec.md     # SDD Specify: what & why (user journeys, success criteria)
+        ├── plan.md     # SDD Plan: how (stack, architecture, constraints)
         └── log/
             ├── 001-initial-attempt/
             │   └── README.md   # summary + execution artifacts
@@ -18,13 +20,21 @@ projects/<project-name>/tasks/
                 └── README.md
 ```
 
+Tasks follow [Spec-Driven Development](sdd.md): `spec.md`, `plan.md`, and the
+breakdown checklist in `AGENTS.md` are the artifacts of the Specify, Plan, and
+Tasks phases; the `log/` folders are the Implement phase.
+
 ## A task is a folder
 
 Named `{NNN}-{task-name-in-kebab-case}`, where `NNN` is a zero-padded sequential
 number per project (`001`, `002`, …). Inside:
 
 - `README.md` — the task for humans: goal, scope, acceptance criteria.
-- `AGENTS.md` — the task for the agent, with metadata in YAML frontmatter.
+- `AGENTS.md` — the task for the agent, with metadata in YAML frontmatter; holds
+  the SDD **Tasks breakdown** checklist once the task is planned.
+- `spec.md` — SDD Specify: what & why (user journeys, success criteria).
+- `plan.md` — SDD Plan: how (stack, architecture, constraints). May be skipped
+  for small, obvious tasks.
 - `log/` — execution history. **Each iteration of working the task creates a new
   log folder** `{NNN}-{description-in-kebab-case}` (numbered per task). Artifacts
   of that iteration go inside it, with a `README.md` summary of what was done.
@@ -44,12 +54,18 @@ Agent-facing spec: precise goal, scope, acceptance criteria, and constraints.
 
 ## Lifecycle
 
-1. **Define (постановка).** Create the task folder in `backlog/` with `README.md`
-   and `AGENTS.md` (`status: backlog`).
-2. **Start.** Move the folder to `active/`; set `status: active`.
-3. **Work.** Do the work in the project's `repo/`. Each run/iteration adds a new
-   `log/{NNN}-...` folder with its artifacts and a summary `README.md`.
-4. **Finish.** Set `status: done`, move the folder to `done/`, and commit. The
+1. **Specify (постановка).** `sys.task.specify` creates the task folder in
+   `backlog/` with `README.md` and `AGENTS.md` (`status: backlog`) and expands
+   the owner's vision into `spec.md`.
+2. **Plan.** `sys.task.plan` writes `plan.md` from the spec, stack, and
+   constraints (skip for trivial tasks).
+3. **Tasks (breakdown).** `sys.task.breakdown` slices spec + plan into a
+   reviewable checklist inside `AGENTS.md`.
+4. **Start.** Move the folder to `active/`; set `status: active`.
+5. **Implement.** Do the work in the project's `repo/`, one chunk at a time. Each
+   run/iteration adds a new `log/{NNN}-...` folder with its artifacts and a
+   summary `README.md`.
+6. **Finish.** Set `status: done`, move the folder to `done/`, and commit. The
    commit is the record — there is no separate log file (see
    [history.md](history.md)).
 

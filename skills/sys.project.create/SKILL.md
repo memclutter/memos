@@ -75,4 +75,4 @@ git commit -m "chore(project): add <name>"
 ```
 
 Then tell the owner (in Russian) what was created and suggest the first task via
-`sys.task.create`.
+`sys.task.specify`.

@@ -49,9 +49,19 @@ Details → [rules/projects.md](rules/projects.md)
 
 Tasks belong to a project under `projects/<name>/tasks/{backlog,active,done}/`.
 Each task is a folder `{NNN}-{slug}` with `README.md` (human), `AGENTS.md`
-(agent + frontmatter), and a `log/` whose numbered subfolders hold the artifacts
-and summary of each execution iteration.
+(agent + frontmatter), `spec.md` and `plan.md` (the SDD artifacts), and a `log/`
+whose numbered subfolders hold the artifacts and summary of each execution
+iteration.
 Details → [rules/tasks.md](rules/tasks.md)
+
+### Spec-Driven Development (SDD)
+
+Work runs through four gated phases — Specify → Plan → Tasks → Implement — where
+the written spec, not the chat history, is the ground truth and the owner stays
+the final quality filter. Each phase has a skill (`sys.task.specify`,
+`sys.task.plan`, `sys.task.breakdown`) and an artifact in the task folder.
+Adapted from Addy Osmani / GitHub Spec Kit.
+Details → [rules/sdd.md](rules/sdd.md)
 
 ### Skills
 

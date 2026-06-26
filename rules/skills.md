@@ -23,13 +23,13 @@ Examples:
 
 - `sys.project.create` — create a project in the OS (folder, `README.md`,
   `AGENTS.md`, `repo/` submodule, `tasks/`, `docs/`).
-- `sys.task.create` — create a task inside a project.
+- `sys.task.specify` — create a task inside a project and write its `spec.md`.
 
 New categories/entities are added as the OS grows; keep the three-part shape.
 
 ## Project-scoped skills resolve the project
 
-A skill that acts on a project (e.g. `sys.task.create`) takes the project as an
+A skill that acts on a project (e.g. `sys.task.specify`) takes the project as an
 argument. **If it is not provided, the skill scans `projects/` and asks the
 owner to pick one** via the available user-question tool before continuing. It
 never guesses the project.
