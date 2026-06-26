@@ -19,9 +19,10 @@ canonical sources.
     OpenCode). Run it after adding or changing a skill, then reload skills in the
     tool ([skills.md](skills.md)).
   - `doctor` — run OS consistency checks (shims present and referencing canon;
-    every `rules/*.md` indexed in `AGENTS.md` with working links). Reports every
-    problem in one run and exits non-zero if any check fails. Read-only — no
-    auto-fix ([ci.md](ci.md)).
+    every `rules/*.md` indexed in `AGENTS.md` with working links; each non-`self`
+    project keeps its submodules under `vcs/<repo-name>/` with no legacy `repo/`).
+    Reports every problem in one run and exits non-zero if any check fails.
+    Read-only — no auto-fix ([ci.md](ci.md)).
 
 ## Success criteria
 

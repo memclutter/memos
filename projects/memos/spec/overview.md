@@ -34,7 +34,8 @@ chat history — is what's authoritative. The OS manages itself as a project too
   (Claude, Cursor, Codex, OpenCode), regenerable with one command and never
   hand-edited.
 - Every project lives under `projects/<name>/` with `README.md`, `AGENTS.md`,
-  `spec/`, `tasks/`, and `docs/` (plus a `repo/` submodule unless `self: true`).
+  `spec/`, `tasks/`, and `docs/` (plus `vcs/<repo-name>/` submodules unless
+  `self: true`).
 - Work flows through SDD; each project's `spec/` reflects **only shipped
   reality** (merge-on-done).
 - All on-disk artifacts are in English; conversation with the owner is in

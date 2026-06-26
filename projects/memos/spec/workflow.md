@@ -12,12 +12,15 @@ support.
 ### Projects
 
 - Each project lives under `projects/<name>/` with `README.md` (human),
-  `AGENTS.md` (agent + frontmatter), `spec/` (living product spec), `repo/` (git
-  submodule), `tasks/`, and `docs/` ([projects.md](../../../rules/projects.md)).
-- Source changes are made in `repo/`; this OS repo pins the submodule commit.
-- The OS manages itself as the `memos` project with `self: true` — no `repo/`,
-  because a repo can't contain itself; its source is the OS repo root and edits
-  commit directly.
+  `AGENTS.md` (agent + frontmatter), `spec/` (living product spec),
+  `vcs/<repo-name>/` (each git repo as a submodule, named as on GitHub),
+  `tasks/`, and `docs/` ([projects.md](../../../rules/projects.md)). A project may
+  hold one or several repos under `vcs/`.
+- Source changes are made in the repo's `vcs/<repo-name>/`; this OS repo pins the
+  submodule commit.
+- The OS manages itself as the `memos` project with `self: true` — no `vcs/`
+  folder, because a repo can't contain itself; its source is the OS repo root and
+  edits commit directly.
 
 ### Tasks
 
@@ -41,7 +44,7 @@ support.
 ## Success criteria
 
 - Every project folder has the full anatomy (`spec/`, `tasks/`, `docs/`, and
-  `repo/` unless `self: true`).
+  `vcs/<repo-name>/` submodules unless `self: true`).
 - A finished task's delta is reflected in `spec/`, and its folder sits in
   `tasks/done/` with `status: done`.
 - The commit history — not a manual journal — is the record of when work happened
