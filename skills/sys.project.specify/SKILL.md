@@ -8,7 +8,7 @@ description: Create a project and write its living product spec in one step —
 category: sys
 entity: project
 action: specify
-version: 0.2.1
+version: 0.3.0
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, Edit, AskUserQuestion
@@ -78,7 +78,10 @@ Scaffold the folder and submodule:
 
 ```bash
 mkdir -p projects/<name>/{spec,tasks/{backlog,active,done},docs}
-git submodule add git@github.com:memclutter/<name>.git projects/<name>/repo
+git submodule add git@github.com:memclutter/<repo-name>.git \
+  projects/<name>/vcs/<repo-name>
+# <repo-name> is the GitHub repo name (often == <name> for a single-repo
+# project); repeat the submodule add for each repo the project owns.
 touch projects/<name>/tasks/{backlog,active,done}/.gitkeep
 ```
 
@@ -92,7 +95,8 @@ Write the project files (see [projects.md](../../rules/projects.md)):
   ```markdown
   ---
   name: <name>
-  repo: git@github.com:memclutter/<name>.git
+  vcs:
+    - git@github.com:memclutter/<repo-name>.git
   status: active
   stack: [<stack>]
   created: <YYYY-MM-DD>
