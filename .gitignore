@@ -1,0 +1,7 @@
+# Local, machine-specific tool settings (not shared)
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
