@@ -1,6 +1,6 @@
 # Projects
 
-Each open-source project is a separate GitHub repo under `memclutter`. Inside
+Each open-source project is one or more GitHub repos under `memclutter`. Inside
 this OS it lives as one folder under `projects/`, named in kebab-case after the
 project.
 
@@ -13,7 +13,8 @@ projects/<project-name>/
 ├── spec/          # the living product spec — current truth (see sdd.md)
 │   ├── overview.md     # vision + product-wide success criteria
 │   └── <capability>.md # one file per capability/domain
-├── repo/          # the project's git repository, as a git submodule
+├── vcs/           # the project's git repositories, each a submodule
+│   └── <repo-name>/    # one folder per repo, named as on GitHub
 ├── tasks/         # tasks for this project (see tasks.md)
 └── docs/          # project documentation
 ```
@@ -24,18 +25,21 @@ projects/<project-name>/
   vision and product-wide success criteria; each capability/domain gets its own
   file so the spec scales while staying conceptually one document. Bootstrap it
   with `sys.project.specify`.
-- `repo/` is the only git submodule; it points at
-  `git@github.com:memclutter/<project-name>.git`. Everything else
-  (`README.md`, `AGENTS.md`, `tasks/`, `docs/`) lives in this OS repo and
-  describes/drives the project.
+- `vcs/` holds the project's git repositories, each as a git submodule in a
+  subfolder **named after its GitHub repository** (`<repo-name>` =
+  `git@github.com:memclutter/<repo-name>.git`). A project has one or several such
+  repos; the folder name makes each checkout self-identifying, even with many
+  projects open in an IDE at once. Everything else (`README.md`, `AGENTS.md`,
+  `tasks/`, `docs/`) lives in this OS repo and describes/drives the project.
 - **Exception — the `memos` project (`self: true`):** the OS manages itself as a
   project too, under `projects/memos/`. A repository cannot contain itself as a
-  submodule, so this project has **no `repo/`** — its source is the OS repo root.
-  It carries `self: true` in its frontmatter and omits the `repo/` folder; edits
-  to OS source are committed directly to this repo (no submodule pointer to bump).
-- Source changes are made, committed, and pushed **inside `repo/`**; this OS
-  repo then pins the new submodule commit with a
-  `chore(submodule): bump <project-name>` commit.
+  submodule, so this project has **no `vcs/` folder** — its source is the OS repo
+  root. It carries `self: true` in its frontmatter (its `vcs:` entry is
+  informational only); edits to OS source are committed directly to this repo (no
+  submodule pointer to bump).
+- Source changes are made, committed, and pushed **inside the repo's
+  `vcs/<repo-name>/`**; this OS repo then pins the new submodule commit with a
+  `chore(submodule): bump <repo-name>` commit.
 - The project's `AGENTS.md` governs project-specific details; the root rules
   govern cross-project conventions.
 
@@ -46,8 +50,9 @@ Metadata lives in YAML frontmatter:
 ```markdown
 ---
 name: <project-name>
-repo: git@github.com:memclutter/<project-name>.git
-self: false           # true only for the OS-self project (no repo/ submodule)
+vcs:                  # one entry per repo; always a list, even for a single repo
+  - git@github.com:memclutter/<repo-name>.git
+self: false           # true only for the OS-self project (no vcs/ folder)
 status: active        # idea | active | paused | archived
 stack: [go, postgres, redis, docker]
 created: <YYYY-MM-DD>
@@ -55,8 +60,11 @@ created: <YYYY-MM-DD>
 
 Agent-facing description of the project: purpose, architecture notes,
 conventions specific to this project, and anything an agent must know before
-working in `repo/`.
+working in `vcs/<repo-name>/`.
 ```
+
+Each `vcs:` entry is a clone URL; its checkout folder under `vcs/` is the
+repository name (the URL basename without `.git`).
 
 ## Add a project
 
@@ -65,8 +73,9 @@ living spec in one step. Under the hood it does:
 
 ```bash
 mkdir -p projects/<project-name>/{spec,tasks/{backlog,active,done},docs}
-git submodule add git@github.com:memclutter/<project-name>.git \
-  projects/<project-name>/repo
+git submodule add git@github.com:memclutter/<repo-name>.git \
+  projects/<project-name>/vcs/<repo-name>
+# repeat the submodule add for each additional repo the project owns,
 # then write projects/<project-name>/README.md and AGENTS.md,
 # and the living spec under spec/
 ```

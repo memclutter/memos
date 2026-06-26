@@ -39,11 +39,12 @@ Details → [rules/stack.md](rules/stack.md)
 
 ### Projects
 
-Each project is its own GitHub repo under `memclutter`, living as a folder under
-`projects/<name>/` with `README.md` (human), `AGENTS.md` (agent + frontmatter),
-`spec/` (the living product spec — current truth), `repo/` (the git submodule),
-`tasks/`, and `docs/`. This OS repo only pins the submodule commit; source
-changes happen inside `repo/`.
+Each project is one or more GitHub repos under `memclutter`, living as a folder
+under `projects/<name>/` with `README.md` (human), `AGENTS.md` (agent +
+frontmatter), `spec/` (the living product spec — current truth), `vcs/<repo-name>/`
+(each git repo as a submodule, named as on GitHub), `tasks/`, and `docs/`. This OS
+repo only pins the submodule commits; source changes happen inside
+`vcs/<repo-name>/`.
 Details → [rules/projects.md](rules/projects.md)
 
 ### Tasks
