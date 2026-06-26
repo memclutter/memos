@@ -18,7 +18,9 @@ Today nothing checks these; you find out only when something is already wrong.
 
 A `memos doctor` subcommand that runs both consistency checks, reports every
 problem it finds, and exits non-zero if any check fails — a single health gate for
-the OS.
+the OS. The gate is wired in **two places**: a local `pre-commit` hook that runs
+`doctor` before each commit, and a GitHub Actions workflow that runs it on push
+and pull request.
 
 ## User journeys
 
@@ -29,6 +31,10 @@ the OS.
 - After adding `rules/foo.md` without an `AGENTS.md` entry, `doctor` reports the
   unindexed rule and exits non-zero. A broken `rules/*.md` link in the index is
   reported the same way.
+- The owner tries to commit a change that breaks an invariant; the `pre-commit`
+  hook runs `doctor`, fails, and blocks the commit until it's fixed.
+- A push or pull request triggers the GitHub Actions workflow, which runs
+  `doctor`; a red check signals the OS is inconsistent.
 
 ## Success criteria
 
@@ -44,6 +50,11 @@ the OS.
 - All problems are collected and printed in one run (checks don't stop at the
   first failure).
 - The command is covered by tests.
+- **pre-commit:** a committed `.pre-commit-config.yaml` defines a hook that runs
+  `uv run scripts/memos doctor`; with pre-commit installed, a commit that breaks
+  an invariant is blocked.
+- **CI:** a committed GitHub Actions workflow runs `uv run scripts/memos doctor`
+  on push and pull request, and fails the job on a non-zero exit.
 
 ## Affected spec sections
 
@@ -52,6 +63,9 @@ the OS.
   criterion is now verifiable via `memos doctor` (modify).
 - `spec/rules.md` — note that the "index ↔ rules/ in sync" success criterion is
   now verifiable via `memos doctor` (modify).
+- `spec/ci.md` — NEW capability: automated enforcement (pre-commit hook + GitHub
+  Actions) that runs `doctor`.
+- `spec/overview.md` — add `ci.md` to the capabilities index (modify).
 
 ## Target state
 
@@ -64,6 +78,10 @@ After this task:
   `memos doctor`.
 - `spec/rules.md` success criteria mention that index↔rules sync is checkable with
   `memos doctor`.
+- `spec/ci.md` exists and describes: the local `pre-commit` hook running `doctor`,
+  the GitHub Actions workflow running `doctor` on push and PR, and the success
+  criterion that the OS is consistent on every commit and green in CI.
+- `spec/overview.md` lists `ci.md` in its capabilities index.
 
 ## Out of scope
 
