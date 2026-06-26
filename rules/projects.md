@@ -19,6 +19,11 @@ projects/<project-name>/
   `git@github.com:memclutter/<project-name>.git`. Everything else
   (`README.md`, `AGENTS.md`, `tasks/`, `docs/`) lives in this OS repo and
   describes/drives the project.
+- **Exception — the `memos` project (`self: true`):** the OS manages itself as a
+  project too, under `projects/memos/`. A repository cannot contain itself as a
+  submodule, so this project has **no `repo/`** — its source is the OS repo root.
+  It carries `self: true` in its frontmatter and omits the `repo/` folder; edits
+  to OS source are committed directly to this repo (no submodule pointer to bump).
 - Source changes are made, committed, and pushed **inside `repo/`**; this OS
   repo then pins the new submodule commit with a
   `chore(submodule): bump <project-name>` commit.
@@ -33,6 +38,7 @@ Metadata lives in YAML frontmatter:
 ---
 name: <project-name>
 repo: git@github.com:memclutter/<project-name>.git
+self: false           # true only for the OS-self project (no repo/ submodule)
 status: active        # idea | active | paused | archived
 stack: [go, postgres, redis, docker]
 created: <YYYY-MM-DD>
