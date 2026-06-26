@@ -1,0 +1,116 @@
+# AGENTS.md
+
+This repository is a **personal operating system** for running open-source
+projects under [github.com/memclutter](https://github.com/memclutter). It holds
+no application code — only the rules, the projects (as submodules), and the
+agent skills needed to work consistently across all projects.
+
+This file is the **index of the rules**. Every rule lives in `rules/` as a
+focused file; below is one paragraph per file with a link to the full text. Read
+the relevant rule before acting on its topic. `CLAUDE.md` points here.
+
+> Keep this index in sync: when a file in `rules/` is added, removed, or
+> renamed, update the matching entry here.
+
+## Rules
+
+### Language
+
+All written records (code, docs, commits, tasks, READMEs) are in **English** —
+these projects are open source. Conversation with the owner is in **Russian**;
+only artifacts written to disk switch to English.
+Details → [rules/language.md](rules/language.md)
+
+### Repo structure
+
+The repo is a personal OS, not an app: `AGENTS.md` indexes the rules, `rules/`
+holds them, `skills/` holds agent skills, and `projects/` holds one folder per
+project. There is no global `tasks/` folder. `rules/` is the single source of
+truth; `AGENTS.md` is its index.
+Details → [rules/repo-structure.md](rules/repo-structure.md)
+
+### Base stack
+
+The default toolbox is Go and Python (backend), PostgreSQL (database), Redis
+(cache/queue), Vue.js (frontend), and Docker (packaging). New tools are added
+deliberately, project by project, as a way to learn; deviations get written
+down.
+Details → [rules/stack.md](rules/stack.md)
+
+### Projects
+
+Each project is its own GitHub repo under `memclutter`, living as a folder under
+`projects/<name>/` with `README.md` (human), `AGENTS.md` (agent + frontmatter),
+`repo/` (the git submodule), `tasks/`, and `docs/`. This OS repo only pins the
+submodule commit; source changes happen inside `repo/`.
+Details → [rules/projects.md](rules/projects.md)
+
+### Tasks
+
+Tasks belong to a project under `projects/<name>/tasks/{backlog,active,done}/`.
+Each task is a folder `{NNN}-{slug}` with `README.md` (human), `AGENTS.md`
+(agent + frontmatter), and a `log/` whose numbered subfolders hold the artifacts
+and summary of each execution iteration.
+Details → [rules/tasks.md](rules/tasks.md)
+
+### Skills
+
+`skills/` holds agent skills available to the agent here — one folder per skill
+with a `SKILL.md` (frontmatter + instructions) and any supporting files. Add a
+skill when a multi-step job recurs across projects.
+Details → [rules/skills.md](rules/skills.md)
+
+### History
+
+Git is the log. No manual append-only journal of work — the commit history is
+the authoritative record of when things happened. A task's own `log/` folders
+hold execution artifacts, not a journal.
+Details → [rules/history.md](rules/history.md)
+
+### Agent workflow
+
+The working agreement: read this index first, keep records current as part of
+the work, prefer the base stack, use Conventional Commits, and ask the owner (in
+Russian) only when a decision is genuinely theirs.
+Details → [rules/workflow.md](rules/workflow.md)
+
+### Git
+
+Conventional Commits, short-lived branches off a releasable `main`, one logical
+change per PR with green CI, and SemVer tags with a changelog.
+Details → [rules/git.md](rules/git.md)
+
+### Go
+
+Current stable Go with modules; `gofmt`/`goimports` and `golangci-lint` in CI;
+pragmatic `cmd`/`internal`/`pkg` layout; wrapped errors; env-based config;
+table-driven tests.
+Details → [rules/go.md](rules/go.md)
+
+### Python
+
+Current CPython (3.12+) managed with `uv`; `ruff` for format/lint and `mypy` for
+types; full type hints; `src/` layout with `pyproject.toml`; `pytest`;
+env-based typed config.
+Details → [rules/python.md](rules/python.md)
+
+### Vue.js / frontend
+
+Vue 3 with `<script setup>`, Composition API, and TypeScript; Vite + pnpm;
+ESLint/Prettier; Pinia for shared state; a typed API client layer; Vitest for
+tests.
+Details → [rules/vue.md](rules/vue.md)
+
+### Docker & local dev
+
+Every project ships a multi-stage `Dockerfile` and a `docker-compose.yml` that
+brings the full local stack up; pinned base images, non-root final stage,
+env-based config with a committed `.env.example`.
+Details → [rules/docker.md](rules/docker.md)
+
+### Data: PostgreSQL & Redis
+
+PostgreSQL is the system of record with versioned migrations and `snake_case`
+schema; Redis is for caching, ephemeral state, and queues only, with namespaced
+keys, TTLs, and graceful degradation when it is down.
+Details → [rules/data.md](rules/data.md)
