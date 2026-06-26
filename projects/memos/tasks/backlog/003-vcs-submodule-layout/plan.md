@@ -79,19 +79,27 @@ preserves the gitlink (pinned commit). Verify the `[submodule "…"]` section na
 is also updated to `projects/dotfiles/vcs/dotfiles`; fix it by hand in
 `.gitmodules` if git left the old name.
 
-### Optional doctor check (recommended)
+### Doctor project-layout check (in scope)
 
-`memos doctor` does **not** validate project layout today, so it passes trivially
-after migration. Recommend adding a small read-only check (`check_project_layout`
-in [doctor.py](../../../scripts/memos/src/memos/doctor.py)) that, for every
-non-`self` project, asserts: no `repo/` folder remains, and every `.gitmodules`
-path for that project sits under `projects/<name>/vcs/`. This gives the new
-invariant teeth.
+`memos doctor` does **not** validate project layout today. Add a read-only check
+`check_project_layout` in [doctor.py](../../../scripts/memos/src/memos/doctor.py),
+registered in `_CHECKS`, that for every non-`self` project asserts: no `repo/`
+folder remains, and every `.gitmodules` path for that project sits under
+`projects/<name>/vcs/`. This enforces the new invariant going forward.
 
-> **Scope flag for the owner:** adding this check also touches `spec/cli.md`, so
-> it extends the spec.md *Affected spec sections* (currently `workflow.md` +
-> `overview.md`) with `spec/cli.md` at Finish. If we skip the check, no doctor
-> code changes and the merge contract is unchanged. Recommendation: include it.
+Implementation notes:
+
+- Parse `.gitmodules` paths (reuse a simple parser; the file is small) and
+  group by project; a `self: true` project is exempt (read `self:` from the
+  project's `AGENTS.md` frontmatter).
+- Flag a problem per offending path: `repo/ submodule still present` or
+  `submodule outside vcs/`.
+- Cover it in `tests/test_doctor.py`: a healthy `vcs/` tree passes, a `repo/`
+  path fails.
+
+This check extends the task's merge contract to `spec/cli.md` (already reflected
+in spec.md *Affected spec sections*): the `doctor` command's documented check
+list gains the project-layout check.
 
 ## Trade-offs & alternatives
 

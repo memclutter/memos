@@ -49,7 +49,9 @@ still has no submodule folder.
   the `vcs/` layout consistently — no lingering reference to a `repo/` submodule.
 - The existing `dotfiles` submodule is migrated to
   `projects/dotfiles/vcs/dotfiles/` with its history and pinned commit intact.
-- `uv run memos doctor` passes against the new layout.
+- `memos doctor` gains a project-layout check that fails if any non-`self`
+  project keeps a `repo/` submodule or has a submodule outside `vcs/`, and
+  `uv run memos doctor` passes against the new layout.
 
 ## Affected spec sections
 
@@ -59,6 +61,8 @@ still has no submodule folder.
 - spec/overview.md — modify: the product-wide success criterion that lists project
   anatomy replaces "(plus a `repo/` submodule unless `self: true`)" with the
   `vcs/<repo-name>/` form.
+- spec/cli.md — modify: the `doctor` command's check list gains the project-layout
+  check (no `repo/`, submodules under `vcs/`).
 
 ## Target state
 
@@ -68,7 +72,8 @@ project keeps its repositories as git submodules under
 name; a project may have one or several such repos; `self: true` projects have no
 `vcs/` folder. `spec/workflow.md`'s Projects subsection, its success criteria, and
 `spec/overview.md`'s anatomy success criterion all use this `vcs/<repo-name>/`
-wording with no remaining mention of a fixed `repo/`.
+wording with no remaining mention of a fixed `repo/`. `spec/cli.md` lists the
+`doctor` project-layout check among the OS consistency checks it runs.
 
 ## Out of scope
 
