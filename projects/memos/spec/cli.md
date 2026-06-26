@@ -8,8 +8,11 @@ canonical sources.
 
 ## Behaviour
 
-- The CLI lives in `scripts/` and is run through `uv`:
-  `uv run scripts/memos <command>` ([scripts.md](../../../rules/scripts.md)).
+- The CLI is a `uv`-managed Python package under `scripts/memos/` (`src/` layout,
+  its own `pyproject.toml`, `ruff`/`mypy`/`pytest`), exposed as a `memos` console
+  script. The repo root declares a `uv` workspace whose only member is
+  `scripts/memos`, so it runs from the repo root via `uv`:
+  `uv run memos <command>` ([scripts.md](../../../rules/scripts.md)).
 - Current commands:
   - `shimify` — regenerate every per-tool skill shim from the canonical
     `skills/<name>/SKILL.md`, for all supported tools (Claude, Cursor, Codex,
@@ -18,7 +21,8 @@ canonical sources.
 
 ## Success criteria
 
-- `uv run scripts/memos shimify` regenerates all shims deterministically and
-  leaves no diff when sources are unchanged.
+- `uv run memos shimify` regenerates all shims deterministically and leaves no
+  diff when sources are unchanged.
+- `uv run ruff check`, `uv run mypy`, and `uv run pytest` pass for the package.
 - New OS-maintenance jobs that recur are added as CLI subcommands rather than
   ad-hoc scripts.

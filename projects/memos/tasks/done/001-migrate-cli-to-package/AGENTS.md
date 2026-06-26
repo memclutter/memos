@@ -1,6 +1,6 @@
 ---
 id: 001-migrate-cli-to-package
-status: active
+status: done
 created: 2026-06-26
 updated: 2026-06-26
 blocks: 002-doctor-command
