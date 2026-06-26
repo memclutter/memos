@@ -1,0 +1,3 @@
+[submodule "projects/dotfiles/repo"]
+	path = projects/dotfiles/repo
+	url = git@github.com:memclutter/dotfiles.git
