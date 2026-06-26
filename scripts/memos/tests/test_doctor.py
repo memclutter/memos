@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from memos.doctor import check_rules_index, check_shims
+from memos.doctor import check_project_layout, check_rules_index, check_shims
 from memos.shims import find_repo_root, write_shims
 
 
@@ -81,6 +81,55 @@ def test_check_rules_index_missing_target(tmp_path: Path) -> None:
     assert any("missing rule" in p and "ghost.md" in p for p in problems)
 
 
+# --- check_project_layout ------------------------------------------------------
+
+
+def _make_project(
+    root: Path, name: str, *, self_: bool = False, with_repo_dir: bool = False
+) -> None:
+    """A minimal project folder with an AGENTS.md (optionally `self: true`)."""
+    project = root / "projects" / name
+    project.mkdir(parents=True)
+    self_line = "self: true\n" if self_ else "self: false\n"
+    (project / "AGENTS.md").write_text(f"---\nname: {name}\n{self_line}---\n\nBody.\n")
+    if with_repo_dir:
+        (project / "repo").mkdir()
+
+
+def _write_gitmodules(root: Path, *paths: str) -> None:
+    blocks = "".join(
+        f'[submodule "{p}"]\n\tpath = {p}\n\turl = git@github.com:memclutter/x.git\n'
+        for p in paths
+    )
+    (root / ".gitmodules").write_text(blocks)
+
+
+def test_check_project_layout_clean(tmp_path: Path) -> None:
+    _make_project(tmp_path, "dotfiles")
+    _write_gitmodules(tmp_path, "projects/dotfiles/vcs/dotfiles")
+    assert check_project_layout(tmp_path) == []
+
+
+def test_check_project_layout_legacy_repo_dir(tmp_path: Path) -> None:
+    _make_project(tmp_path, "dotfiles", with_repo_dir=True)
+    _write_gitmodules(tmp_path, "projects/dotfiles/repo")
+    problems = check_project_layout(tmp_path)
+    assert any("legacy repo/" in p and "dotfiles" in p for p in problems)
+
+
+def test_check_project_layout_submodule_outside_vcs(tmp_path: Path) -> None:
+    _make_project(tmp_path, "dotfiles")
+    _write_gitmodules(tmp_path, "projects/dotfiles/somewhere")
+    problems = check_project_layout(tmp_path)
+    assert any("outside vcs/" in p and "somewhere" in p for p in problems)
+
+
+def test_check_project_layout_self_exempt(tmp_path: Path) -> None:
+    # A self project may have neither vcs/ nor a submodule; a stray repo/ is ignored.
+    _make_project(tmp_path, "memos", self_=True, with_repo_dir=True)
+    assert check_project_layout(tmp_path) == []
+
+
 # --- smoke ---------------------------------------------------------------------
 
 
@@ -88,3 +137,4 @@ def test_real_repo_is_healthy() -> None:
     root = find_repo_root()
     assert check_shims(root) == []
     assert check_rules_index(root) == []
+    assert check_project_layout(root) == []

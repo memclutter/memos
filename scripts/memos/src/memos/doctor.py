@@ -17,6 +17,18 @@ from .shims import TOOLS, compute_shims, find_repo_root
 # Markdown link target pointing at a rule file, e.g. `[x](rules/x.md)`.
 _RULE_LINK = re.compile(r"\((?:\./)?rules/([A-Za-z0-9._-]+\.md)[)#]")
 
+# A `path = ...` line in .gitmodules.
+_GITMODULES_PATH = re.compile(r"^\s*path\s*=\s*(.+?)\s*$", re.MULTILINE)
+
+# A `self: true` line in a project's AGENTS.md frontmatter.
+_SELF_TRUE = re.compile(r"^self:\s*true\b", re.MULTILINE)
+
+
+def _project_is_self(project: Path) -> bool:
+    """True if the project's AGENTS.md marks it `self: true` (the OS itself)."""
+    agents = project / "AGENTS.md"
+    return agents.is_file() and bool(_SELF_TRUE.search(agents.read_text()))
+
 
 def check_shims(root: Path) -> list[str]:
     """Every canonical skill has a correct shim in each tool dir; none are stale."""
@@ -60,9 +72,39 @@ def check_rules_index(root: Path) -> list[str]:
     return problems
 
 
+def check_project_layout(root: Path) -> list[str]:
+    """Non-self projects keep submodules under vcs/<repo-name>/, never a fixed repo/."""
+    projects_dir = root / "projects"
+    if not projects_dir.is_dir():
+        return []
+
+    gitmodules = root / ".gitmodules"
+    paths = (
+        _GITMODULES_PATH.findall(gitmodules.read_text())
+        if gitmodules.is_file()
+        else []
+    )
+
+    problems: list[str] = []
+    for project in sorted(p for p in projects_dir.iterdir() if p.is_dir()):
+        name = project.name
+        if _project_is_self(project):
+            continue
+        if (project / "repo").exists():
+            problems.append(
+                f"project {name}: legacy repo/ submodule folder (use vcs/<repo-name>/)"
+            )
+        vcs_prefix = f"projects/{name}/vcs/"
+        for path in paths:
+            if path.startswith(f"projects/{name}/") and not path.startswith(vcs_prefix):
+                problems.append(f"project {name}: submodule outside vcs/: {path}")
+    return problems
+
+
 _CHECKS: list[tuple[str, Callable[[Path], list[str]]]] = [
     ("shims", check_shims),
     ("rules index", check_rules_index),
+    ("project layout", check_project_layout),
 ]
 
 
