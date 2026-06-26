@@ -67,3 +67,17 @@ Then read [AGENTS.md](AGENTS.md) and the files under [`rules/`](rules/).
 ## License
 
 See [LICENSE](LICENSE).
+
+## References
+
+Third-party work this repository adapts or bundles:
+
+- **Spec-Driven Development** — adapted from Addy Osmani,
+  ["How to write a good spec for AI agents"](https://addyosmani.com/blog/good-spec/)
+  (addyosmani.com, 2026) — © 2026 Addy Osmani. The four-phase model
+  (Specify → Plan → Tasks → Implement) follows GitHub's open-source
+  [Spec Kit](https://github.com/github/spec-kit).
+- **`doc.prose.review` skill** — rules vendored from
+  [*The Elements of Agent Style*](https://github.com/yzhao062/agent-style)
+  ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)). See
+  [skills/doc.prose.review/references/ATTRIBUTION.md](skills/doc.prose.review/references/ATTRIBUTION.md).
