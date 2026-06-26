@@ -67,9 +67,11 @@ for this version; if it has none, the GitHub release body is the record.
 ## 5. Tag and push
 
 ```bash
-git tag -a <version> -m "<version> — <short title>" -F <notes-file>   # annotated
+git tag -a <version> -m "<version> — <short title>"   # annotated; -m and -F can't mix
 git push origin <version>
 ```
+
+The full notes go to the GitHub release below; the tag carries the short title.
 
 ## 6. Publish the GitHub release
 
