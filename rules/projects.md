@@ -10,11 +10,20 @@ project.
 projects/<project-name>/
 ├── README.md      # project description for humans
 ├── AGENTS.md      # project description for the agent (frontmatter metadata)
+├── spec/          # the living product spec — current truth (see sdd.md)
+│   ├── overview.md     # vision + product-wide success criteria
+│   └── <capability>.md # one file per capability/domain
 ├── repo/          # the project's git repository, as a git submodule
 ├── tasks/         # tasks for this project (see tasks.md)
 └── docs/          # project documentation
 ```
 
+- `spec/` is the **living product spec**: what the product does *now*, the
+  integral of every shipped task. It holds only shipped reality — tasks fold
+  their deltas in at the Finish gate ([sdd.md](sdd.md)). `overview.md` carries the
+  vision and product-wide success criteria; each capability/domain gets its own
+  file so the spec scales while staying conceptually one document. Bootstrap it
+  with `sys.project.specify`.
 - `repo/` is the only git submodule; it points at
   `git@github.com:memclutter/<project-name>.git`. Everything else
   (`README.md`, `AGENTS.md`, `tasks/`, `docs/`) lives in this OS repo and
@@ -52,10 +61,11 @@ working in `repo/`.
 ## Add a project
 
 ```bash
-mkdir -p projects/<project-name>/{tasks/{backlog,active,done},docs}
+mkdir -p projects/<project-name>/{spec,tasks/{backlog,active,done},docs}
 git submodule add git@github.com:memclutter/<project-name>.git \
   projects/<project-name>/repo
-# then create projects/<project-name>/README.md and AGENTS.md
+# then create projects/<project-name>/README.md and AGENTS.md,
+# and bootstrap spec/ with sys.project.specify
 ```
 
 Clone this OS with all submodules:

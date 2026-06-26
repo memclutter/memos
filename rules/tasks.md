@@ -32,7 +32,10 @@ number per project (`001`, `002`, …). Inside:
 - `README.md` — the task for humans: goal, scope, acceptance criteria.
 - `AGENTS.md` — the task for the agent, with metadata in YAML frontmatter; holds
   the SDD **Tasks breakdown** checklist once the task is planned.
-- `spec.md` — SDD Specify: what & why (user journeys, success criteria).
+- `spec.md` — SDD Specify: what & why (user journeys, success criteria), written
+  as a **delta against the project's living spec** (`projects/<name>/spec/`). It
+  names the `spec/` sections it changes and their target state; it does not
+  re-describe the whole product. See [sdd.md](sdd.md).
 - `plan.md` — SDD Plan: how (stack, architecture, constraints). May be skipped
   for small, obvious tasks.
 - `log/` — execution history. **Each iteration of working the task creates a new
@@ -65,7 +68,10 @@ Agent-facing spec: precise goal, scope, acceptance criteria, and constraints.
 5. **Implement.** Do the work in the project's `repo/`, one chunk at a time. Each
    run/iteration adds a new `log/{NNN}-...` folder with its artifacts and a
    summary `README.md`.
-6. **Finish.** Set `status: done`, move the folder to `done/`, and commit. The
+6. **Finish.** `sys.task.finish` folds the task's delta into the project's living
+   spec: apply the spec.md `Target state` to `projects/<name>/spec/`, verify
+   `repo/` matches the updated spec, set `status: done`, move the folder to
+   `done/`, and commit. The done task keeps its delta spec.md as history; the
    commit is the record — there is no separate log file (see
    [history.md](history.md)).
 

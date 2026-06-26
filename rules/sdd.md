@@ -8,6 +8,32 @@ itself against it.
 > Don't wait until the end to see if the agent met the spec. Validate at every
 > gate.
 
+## Two levels: project spec and task spec
+
+SDD runs at **two altitudes**. A project is itself one living spec; each task is
+a *delta* against it. Three layers, from most stable to most volatile:
+
+| Layer | Where | Describes | Changes |
+|-------|-------|-----------|---------|
+| **Constitution** | `projects/<name>/AGENTS.md` | principles, stack, boundaries, invariants | rarely |
+| **Living product spec** | `projects/<name>/spec/` | *what the product does now* — the integral of all shipped tasks | on every finished task |
+| **Task delta spec** | `tasks/.../spec.md` | *what one task changes* in the living spec | within a task |
+
+- The **living product spec** (`spec/`) is the single source of truth for the
+  product's current behaviour: `overview.md` (vision + product-wide success
+  criteria) plus one file per capability/domain. Conceptually one document,
+  physically split so it scales. See [projects.md](projects.md).
+- A **task delta spec** never re-describes the whole product. It names the
+  `spec/` sections it touches and the target state they must reach. See
+  [tasks.md](tasks.md).
+- **Merge-on-done.** `spec/` reflects **only shipped reality**. A task's delta is
+  folded into `spec/` at the Finish gate, not before. While a task is `active`,
+  `spec/` legitimately lags behind it — that is honest and keeps the product spec
+  drift-free.
+
+The four phases below are the **task-level** loop. Bootstrapping or amending the
+living product spec is the `sys.project.specify` skill.
+
 ## The four phases
 
 Each phase produces a written artifact and is a **checkpoint** — you don't move
@@ -21,14 +47,18 @@ on until the current one is validated. The phases map onto a task folder
 | **Tasks**     | Agent slices spec + plan into small, reviewable chunks.             | checklist in `AGENTS.md`| `sys.task.breakdown` |
 | **Implement** | Agent works the chunks one at a time; you validate each.           | `log/{NNN}-.../`        | —                    |
 
-- **Specify** describes *what* and *why*: user journeys and success criteria.
-  No implementation details.
+- **Specify** describes *what* and *why*: user journeys and success criteria, as
+  a **delta** against the living product spec (which `spec/` sections change and
+  their target state). No implementation details.
 - **Plan** describes *how*: technical decisions, stack, architecture, trade-offs,
   constraints.
 - **Tasks** turns the plan into a checklist of small steps. Don't mix unrelated
   concerns in one step (e.g. auth and schema changes).
 - **Implement** does the work in the project's `repo/`, one chunk at a time, each
   iteration recorded in a `log/` folder.
+- **Finish** (the closing gate, after Implement) folds the task's delta into the
+  living product spec: apply the `Target state` to `spec/`, verify `repo/` matches
+  it, then close the task. Done by `sys.task.finish`.
 
 ## A good spec: six areas
 

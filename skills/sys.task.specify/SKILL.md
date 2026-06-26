@@ -2,12 +2,12 @@
 name: sys.task.specify
 description: Start a task in a project — scaffold
   projects/<name>/tasks/backlog/<NNN>-<slug>/ (README.md, AGENTS.md, log/) and
-  expand the owner's vision into spec.md (SDD Specify phase). Use when the owner
-  wants to begin a new task.
+  expand the owner's vision into spec.md as a delta against the project's living
+  spec (SDD Specify phase). Use when the owner wants to begin a new task.
 category: sys
 entity: task
 action: specify
-version: 0.1.0
+version: 0.2.0
 x-shim:
   claude:
     allowed-tools: Bash, Read, Write, AskUserQuestion
@@ -31,6 +31,19 @@ in English.
 ```bash
 ls -1 projects/ 2>/dev/null   # the choices to offer
 ```
+
+## 1b. Read the living product spec
+
+The task's `spec.md` is a **delta** against the project's living spec, so read it
+first to know the current truth you're amending:
+
+```bash
+ls -1 projects/<project>/spec/ 2>/dev/null   # capabilities; empty = not bootstrapped
+```
+
+Read `spec/overview.md` and any relevant capability files. If `spec/` is missing
+or empty, stop and offer to run `sys.project.specify` first — a task can't be a
+delta against a spec that doesn't exist.
 
 ## 2. Gather the vision
 
@@ -93,6 +106,17 @@ Write the files:
   ## Success criteria
   Checkable conditions that say the task is done.
 
+  ## Affected spec sections
+  Which files in projects/<project>/spec/ this task changes. For each: path and a
+  one-line note (modify / NEW / remove). This is the merge contract checked at
+  Finish.
+  - spec/<capability>.md — <what changes>
+  - spec/overview.md — <e.g. add a success criterion> (if applicable)
+
+  ## Target state
+  How the affected spec/ sections must read AFTER this task ships. Write the
+  intended end state, not a diff — sys.task.finish applies this to spec/.
+
   ## Out of scope
   What this task deliberately does not cover.
 
@@ -102,6 +126,10 @@ Write the files:
   - 🚫 Never: …
   Reference the global rules; record only the project/task delta.
   ```
+
+  Cross-check `Affected spec sections` against the current `spec/`: flag any
+  conflict with another in-flight task and confirm the capability split with the
+  owner if the task introduces a new capability file.
 
 ## 5. Commit
 

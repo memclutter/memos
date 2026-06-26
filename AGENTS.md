@@ -41,26 +41,30 @@ Details → [rules/stack.md](rules/stack.md)
 
 Each project is its own GitHub repo under `memclutter`, living as a folder under
 `projects/<name>/` with `README.md` (human), `AGENTS.md` (agent + frontmatter),
-`repo/` (the git submodule), `tasks/`, and `docs/`. This OS repo only pins the
-submodule commit; source changes happen inside `repo/`.
+`spec/` (the living product spec — current truth), `repo/` (the git submodule),
+`tasks/`, and `docs/`. This OS repo only pins the submodule commit; source
+changes happen inside `repo/`.
 Details → [rules/projects.md](rules/projects.md)
 
 ### Tasks
 
 Tasks belong to a project under `projects/<name>/tasks/{backlog,active,done}/`.
 Each task is a folder `{NNN}-{slug}` with `README.md` (human), `AGENTS.md`
-(agent + frontmatter), `spec.md` and `plan.md` (the SDD artifacts), and a `log/`
-whose numbered subfolders hold the artifacts and summary of each execution
-iteration.
+(agent + frontmatter), `spec.md` and `plan.md` (the SDD artifacts — `spec.md` is
+a delta against the project's living spec), and a `log/` whose numbered
+subfolders hold the artifacts and summary of each execution iteration. A finished
+task folds its delta into `projects/<name>/spec/`.
 Details → [rules/tasks.md](rules/tasks.md)
 
 ### Spec-Driven Development (SDD)
 
-Work runs through four gated phases — Specify → Plan → Tasks → Implement — where
-the written spec, not the chat history, is the ground truth and the owner stays
-the final quality filter. Each phase has a skill (`sys.task.specify`,
-`sys.task.plan`, `sys.task.breakdown`) and an artifact in the task folder.
-Adapted from Addy Osmani / GitHub Spec Kit.
+Work runs at two altitudes: a project is one living spec (`projects/<name>/spec/`,
+bootstrapped by `sys.project.specify`), and each task is a delta against it. The
+task loop has four gated phases — Specify → Plan → Tasks → Implement — where the
+written spec, not the chat history, is the ground truth and the owner stays the
+final quality filter. Each phase has a skill (`sys.task.specify`, `sys.task.plan`,
+`sys.task.breakdown`); a closing Finish gate (`sys.task.finish`) folds the delta
+into the living spec (merge-on-done). Adapted from Addy Osmani / GitHub Spec Kit.
 Details → [rules/sdd.md](rules/sdd.md)
 
 ### Skills

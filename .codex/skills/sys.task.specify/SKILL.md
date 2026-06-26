@@ -1,8 +1,9 @@
 ---
 name: sys.task.specify
 description: Start a task in a project — scaffold projects/<name>/tasks/backlog/<NNN>-<slug>/
-  (README.md, AGENTS.md, log/) and expand the owner's vision into spec.md (SDD Specify
-  phase). Use when the owner wants to begin a new task.
+  (README.md, AGENTS.md, log/) and expand the owner's vision into spec.md as a delta
+  against the project's living spec (SDD Specify phase). Use when the owner wants
+  to begin a new task.
 ---
 
 # sys.task.specify
