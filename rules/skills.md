@@ -89,11 +89,11 @@ the shims.
 Shims are produced by the `shimify` command of the OS CLI, run through `uv`:
 
 ```bash
-uv run scripts/memos shimify          # regenerate all shims for all tools
+uv run memos shimify          # regenerate all shims for all tools
 ```
 
 Run it after adding or changing a skill. See [scripts.md](scripts.md) for the
-`scripts/memos` CLI.
+`memos` CLI.
 
 A tool scans its skill directory at startup, not on the fly, so after running
 `shimify` **reload skills in your IDE/agent** for new or renamed skills to appear

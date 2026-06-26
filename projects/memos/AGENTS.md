@@ -23,6 +23,7 @@ repo root.
 ## Conventions
 
 - Follow the root rules in `rules/` (this project does not override them).
-- The OS CLI is `scripts/memos`, run via `uv` — see `rules/scripts.md`.
-- After changing a skill, run `uv run scripts/memos shimify` and reload skills in
+- The OS CLI is the `memos` package under `scripts/memos/`, run via
+  `uv run memos` (uv workspace) — see `rules/scripts.md`.
+- After changing a skill, run `uv run memos shimify` and reload skills in
   your IDE/agent.

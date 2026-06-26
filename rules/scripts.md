@@ -6,18 +6,22 @@ skill shims, scaffolding projects/tasks, and other maintenance chores live here.
 
 ```
 scripts/
-└── memos          # the OS CLI (subcommands), run via uv
+└── memos/         # the OS CLI — a uv-managed Python package (src/ layout)
+    ├── pyproject.toml
+    └── src/memos/
 ```
 
 ## The `memos` CLI
 
-`scripts/memos` is the single entry point, exposing subcommands. It is a Python
-tool and is **always run through `uv`**, which resolves its dependencies:
+The CLI is a proper Python package under `scripts/memos/` (`src/` layout, its own
+`pyproject.toml`), exposed as a `memos` console script. The repo root declares a
+**uv workspace** (`[tool.uv.workspace]`) whose only member is `scripts/memos`, so
+the CLI runs from the repo root via `uv`, which resolves its dependencies:
 
 ```bash
-uv run scripts/memos <command> [args]
+uv run memos <command> [args]
 
-uv run scripts/memos shimify        # regenerate skill shims (see skills.md)
+uv run memos shimify        # regenerate skill shims (see skills.md)
 ```
 
 ## Conventions

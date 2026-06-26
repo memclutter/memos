@@ -22,7 +22,7 @@ GitHub Actions workflow.
 
 ## Acceptance criteria
 
-- `uv run scripts/memos doctor` reports all problems found and exits non-zero if
+- `uv run memos doctor` reports all problems found and exits non-zero if
   any check fails; exits zero on a clean repo.
 - Both checks above are implemented and covered by tests.
 - A committed `.pre-commit-config.yaml` runs `doctor`; a committed GitHub Actions
