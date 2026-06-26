@@ -6,7 +6,9 @@ skill shims, scaffolding projects/tasks, and other maintenance chores live here.
 
 ```
 scripts/
-└── memos/         # the OS CLI — a uv-managed Python package (src/ layout)
+├── pyproject.toml   # uv workspace root (keeps .venv/.cache under scripts/)
+├── uv.lock
+└── memos/           # the OS CLI — a uv-managed Python package (src/ layout)
     ├── pyproject.toml
     └── src/memos/
 ```
@@ -14,12 +16,19 @@ scripts/
 ## The `memos` CLI
 
 The CLI is a proper Python package under `scripts/memos/` (`src/` layout, its own
-`pyproject.toml`), exposed as a `memos` console script. The repo root declares a
-**uv workspace** (`[tool.uv.workspace]`) whose only member is `scripts/memos`, so
-the CLI runs from the repo root via `uv`, which resolves its dependencies:
+`pyproject.toml`), exposed as a `memos` console script. The **uv workspace root**
+(`[tool.uv.workspace]`) lives at `scripts/pyproject.toml` with `memos` as its only
+member, so uv keeps the virtualenv (`scripts/.venv`) and tool caches
+(`scripts/.cache`) under `scripts/` rather than scattering them at the repo root.
+
+Run the CLI from inside the workspace, or from the repo root with `--directory`:
 
 ```bash
+# from scripts/memos
 uv run memos <command> [args]
+
+# from the repo root
+uv run --directory scripts/memos memos <command> [args]
 
 uv run memos shimify        # regenerate skill shims (see skills.md)
 ```

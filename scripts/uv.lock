@@ -145,7 +145,7 @@ wheels = [
 [[package]]
 name = "memos"
 version = "0.1.0"
-source = { editable = "scripts/memos" }
+source = { editable = "memos" }
 dependencies = [
     { name = "pyyaml" },
 ]
