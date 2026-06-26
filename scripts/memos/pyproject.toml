@@ -21,6 +21,7 @@ dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "types-PyYAML>=6"]
 [tool.ruff]
 line-length = 88
 src = ["src", "tests"]
+cache-dir = "../.cache/ruff"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
@@ -28,3 +29,7 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.mypy]
 files = ["src"]
 strict = true
+cache_dir = "../.cache/mypy"
+
+[tool.pytest.ini_options]
+cache_dir = "../.cache/pytest"

@@ -6,7 +6,8 @@ __pycache__/
 *.py[cod]
 .venv/
 
-# Tool caches
+# Tool caches (consolidated under scripts/.cache; legacy names kept as fallback)
+.cache/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/

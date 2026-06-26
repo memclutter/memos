@@ -1,27 +1,30 @@
+# UV_PROJECT_ENVIRONMENT keeps the virtualenv under scripts/.venv (resolved
+# relative to the uv workspace root); tool caches go to scripts/.cache via
+# scripts/memos/pyproject.toml.
 repos:
   - repo: local
     hooks:
       - id: ruff-check
         name: ruff check
-        entry: bash -c 'cd scripts/memos && uv run ruff check .'
+        entry: bash -c 'cd scripts/memos && UV_PROJECT_ENVIRONMENT=scripts/.venv uv run ruff check .'
         language: system
         pass_filenames: false
         always_run: true
       - id: ruff-format
         name: ruff format --check
-        entry: bash -c 'cd scripts/memos && uv run ruff format --check .'
+        entry: bash -c 'cd scripts/memos && UV_PROJECT_ENVIRONMENT=scripts/.venv uv run ruff format --check .'
         language: system
         pass_filenames: false
         always_run: true
       - id: mypy
         name: mypy
-        entry: bash -c 'cd scripts/memos && uv run mypy'
+        entry: bash -c 'cd scripts/memos && UV_PROJECT_ENVIRONMENT=scripts/.venv uv run mypy'
         language: system
         pass_filenames: false
         always_run: true
       - id: memos-doctor
         name: memos doctor
-        entry: uv run memos doctor
+        entry: bash -c 'UV_PROJECT_ENVIRONMENT=scripts/.venv uv run memos doctor'
         language: system
         pass_filenames: false
         always_run: true

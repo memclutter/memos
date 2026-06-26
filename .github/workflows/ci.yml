@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   check:
     runs-on: ubuntu-latest
+    # Keep the virtualenv under scripts/ (resolved relative to the workspace root).
+    env:
+      UV_PROJECT_ENVIRONMENT: scripts/.venv
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
