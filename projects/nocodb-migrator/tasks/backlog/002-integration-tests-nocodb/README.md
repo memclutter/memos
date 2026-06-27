@@ -37,5 +37,6 @@ have caught the issue #1 / #2 drift.
 
 ## Status
 
-Backlog. Next phase: `sys.task.plan` (the plan below is a draft carried over from
-task 001's split — review before implementation).
+Backlog, planned. Next phase: `sys.task.breakdown`. Implementation starts with a
+bootstrap spike (see `plan.md`), since obtaining a working API token + base from a
+fresh NocoDB container is the main unknown.
