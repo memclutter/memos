@@ -1,3 +1,6 @@
 [submodule "projects/dotfiles/vcs/dotfiles"]
 	path = projects/dotfiles/vcs/dotfiles
 	url = git@github.com:memclutter/dotfiles.git
+[submodule "projects/nocodb-migrator/vcs/nocodb-migrator"]
+	path = projects/nocodb-migrator/vcs/nocodb-migrator
+	url = git@github.com:memclutter/nocodb-migrator.git
