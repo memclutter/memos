@@ -22,6 +22,9 @@ single Go binary (`nocodb-migrate`) configured entirely from the environment.
 - [nocodb-api.md](nocodb-api.md) — the NocoDB Meta API v3 client: token
   authentication, the table/field/record endpoints used, and how operations map
   onto them.
+- [quality.md](quality.md) — the automated test strategy (unit tests over the API
+  client, storage, and executor against an in-process mock NocoDB), the GitHub
+  Actions CI pipeline, and the local pre-commit checks.
 
 ## Product-wide success criteria
 
@@ -35,6 +38,9 @@ single Go binary (`nocodb-migrate`) configured entirely from the environment.
 - A missing required environment variable, an unreachable instance, or an
   invalid migration JSON fails the command with a non-zero exit and a wrapped
   error message rather than partial silent success.
+- The NocoDB integration boundary is covered by unit tests that run on every CI
+  push/PR alongside lint, exercising the API client, storage, and executor
+  against an in-process mock.
 
 ## Boundaries
 
