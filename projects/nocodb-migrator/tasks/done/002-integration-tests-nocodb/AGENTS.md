@@ -1,6 +1,6 @@
 ---
 id: 002-integration-tests-nocodb
-status: active
+status: done
 created: 2026-06-27
 updated: 2026-06-27
 ---
@@ -45,25 +45,25 @@ task 001 (unit suite + CI workflow).
 
 ## Tasks breakdown
 
-- [ ] 1. **Bootstrap spike.** Pin a `nocodb/nocodb` tag that exposes
+- [x] 1. **Bootstrap spike.** Pin a `nocodb/nocodb` tag that exposes
   `/api/v3/meta`; from a throwaway `//go:build integration` test, start the
   container and obtain a working `xc-token` + base id. Lock the exact
   signup → create-base → create-token calls. ⚠️ Gate: confirm the pinned tag and
   bootstrap sequence with the owner before building on them. (de-risks the rest)
-- [ ] 2. Add `testcontainers-go` (under the `integration` tag only) and a
+- [x] 2. Add `testcontainers-go` (under the `integration` tag only) and a
   `internal/testutil/nocodb_container.go` helper (`//go:build integration`):
   start NocoDB, wait for ready, `Bootstrap() (url, token, baseID)` using the
   calls from step 1. Verify it does not enter the default unit build
   (`go build ./...` / `go test ./...` still clean, no testcontainers pulled).
-- [ ] 3. Add the Docker-availability runtime guard so a tagged run without Docker
+- [x] 3. Add the Docker-availability runtime guard so a tagged run without Docker
   `t.Skip`s with a clear message instead of failing.
-- [ ] 4. Write `cmd/integration_test.go` (`//go:build integration`, `package cmd`):
+- [x] 4. Write `cmd/integration_test.go` (`//go:build integration`, `package cmd`):
   `t.Setenv` the four env vars, write a temp migrations dir (create_table +
   create_field + insert_row up / reversing down), call `runUp(0)`, assert
   table/field/row + `Migrations` record via the client, call `runDown(0)`, assert
   prior state restored. Record any real-NocoDB divergence as an issue-#2 finding.
-- [ ] 5. Extend `.github/workflows/ci.yml` with a separate `integration` job
+- [x] 5. Extend `.github/workflows/ci.yml` with a separate `integration` job
   (`go test -tags=integration ./...` on `ubuntu-latest`), independent of
   `lint-unit`; confirm green on the PR.
-- [ ] 6. Document the tagged suite and its Docker requirement in `CONTRIBUTING.md`
+- [x] 6. Document the tagged suite and its Docker requirement in `CONTRIBUTING.md`
   (replace the "tracked separately" note from task 001 with how to run it).

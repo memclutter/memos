@@ -36,12 +36,35 @@ The suite covers the three layers that touch NocoDB:
   eight operation types to the right endpoint, an unknown type errors, and
   `ExecuteMigration` stops and wraps on the first failing operation.
 
+### Integration tests
+
+An opt-in integration suite runs the real `up`/`down` command path against a
+NocoDB started in Docker (testcontainers-go), the cross-check the unit mocks
+cannot give. It is gated behind the `integration` build tag, so the default
+`go test ./...` and the pre-commit hook never compile testcontainers or need
+Docker; it runs via `go test -tags=integration ./...`.
+
+A container helper in `internal/testutil` starts `nocodb/nocodb` (a pinned tag
+exposing Meta API v3), waits for readiness, and bootstraps a usable API token and
+base (signup → API token → workspace → base). The end-to-end test applies a
+migration with `runUp`, asserts the resulting tables/fields/records and the
+recorded `Migrations` row via the client, then `runDown` and asserts the base
+returns to its prior state. When Docker is not available the suite skips cleanly
+rather than failing. A failure against real NocoDB means the implementation has
+diverged from the live Meta API v3 — a bug to fix, not a test to weaken.
+
 ### Continuous integration
 
-A GitHub Actions workflow (`.github/workflows/ci.yml`) runs a `lint-unit` job on
-every pull request and on pushes to `main`: a `gofmt` check, `golangci-lint run`
-(configured by `.golangci.yml`, golangci-lint v2 via `golangci-lint-action@v7`),
-and `go test ./...`. CI must be green before a change is merged.
+A GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every pull request
+and on pushes to `main` in two independent jobs:
+
+- `lint-unit` — a `gofmt` check, `golangci-lint run` (configured by
+  `.golangci.yml`, golangci-lint v2 via `golangci-lint-action@v7`), and
+  `go test ./...`.
+- `integration` — `go test -tags=integration ./...` on a Docker-enabled runner,
+  kept off the fast lint+unit critical path.
+
+CI must be green before a change is merged.
 
 ### pre-commit
 
@@ -57,13 +80,12 @@ documents `pre-commit install` and running the hooks and the suite.
 - `golangci-lint run ./...` reports no issues; `gofmt` reports no unformatted
   files.
 - The CI `lint-unit` job runs lint and unit tests on every push/PR and gates
-  merges.
+  merges; a separate `integration` job runs the build-tag-gated suite against a
+  dockerized NocoDB.
+- `go test -tags=integration ./...` applies and rolls back a migration against a
+  real NocoDB container and asserts the schema/data outcome; without Docker it
+  skips cleanly.
 - `pre-commit run --all-files` passes.
 - No real `NOCODB_API_TOKEN`, base id, or instance URL appears in tests or CI;
-  tests rely only on the in-process mock.
-
-## Not yet covered
-
-End-to-end integration tests against a real dockerized NocoDB are not part of the
-suite yet; they are tracked separately and, when added, will be build-tag gated
-so the default `go test ./...` stays network-free.
+  unit tests rely on the in-process mock and integration tests on an ephemeral
+  container only.

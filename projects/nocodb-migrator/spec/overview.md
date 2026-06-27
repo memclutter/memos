@@ -23,8 +23,9 @@ single Go binary (`nocodb-migrate`) configured entirely from the environment.
   authentication, the table/field/record endpoints used, and how operations map
   onto them.
 - [quality.md](quality.md) — the automated test strategy (unit tests over the API
-  client, storage, and executor against an in-process mock NocoDB), the GitHub
-  Actions CI pipeline, and the local pre-commit checks.
+  client, storage, and executor against an in-process mock NocoDB, plus an opt-in
+  integration suite running the real commands against a dockerized NocoDB), the
+  GitHub Actions CI pipeline, and the local pre-commit checks.
 
 ## Product-wide success criteria
 
@@ -39,8 +40,9 @@ single Go binary (`nocodb-migrate`) configured entirely from the environment.
   invalid migration JSON fails the command with a non-zero exit and a wrapped
   error message rather than partial silent success.
 - The NocoDB integration boundary is covered by unit tests that run on every CI
-  push/PR alongside lint, exercising the API client, storage, and executor
-  against an in-process mock.
+  push/PR alongside lint (API client, storage, executor against an in-process
+  mock) and by an opt-in integration suite that runs the real `up`/`down` against
+  a dockerized NocoDB in a separate CI job.
 
 ## Boundaries
 
