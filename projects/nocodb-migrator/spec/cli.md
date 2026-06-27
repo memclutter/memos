@@ -84,9 +84,16 @@ State lives in the base, not on disk. On first use the tool creates a
 
 `Direction` and `Status` are **SingleSelect by design** — the fixed, colored
 option set is the intended semantics (a constrained enumeration the user sees in
-the NocoDB UI), not interchangeable with free `SingleLineText`. The table
-creation must therefore materialize these select choices on every NocoDB backend,
-including external SQL sources such as MySQL.
+the NocoDB UI), not interchangeable with free `SingleLineText`.
+
+To make these select choices materialize on every NocoDB backend — including
+external SQL sources such as MySQL and PostgreSQL — the table is created in two
+steps: the non-select fields (`Timestamp`, `Name`, `AppliedAt`) in the
+create-table request, then `Direction` and `Status` added via separate
+field-create calls. A single bulk create does not carry the select choices into
+the column on external SQL backends (NocoDB emits a value-less `enum`, which
+MySQL rejects). If the table already exists, any missing select field is added,
+so a partially-created table heals on the next run.
 
 The current version is the highest `Timestamp` among rows with `Direction = up`
 and `Status = success`. A migration counts as applied when such a row exists for

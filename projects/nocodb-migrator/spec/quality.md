@@ -53,6 +53,14 @@ returns to its prior state. When Docker is not available the suite skips cleanly
 rather than failing. A failure against real NocoDB means the implementation has
 diverged from the live Meta API v3 — a bug to fix, not a test to weaken.
 
+The helper is **backend-parameterized** (`StartNocoDBOn`): besides the default
+bundled store (SQLite), it can run NocoDB against an external **MySQL** or
+**PostgreSQL** source — a second DB container on a shared network, wired via
+`NC_DB`. A backend matrix test creates the `Migrations` table on each of SQLite,
+MySQL, and Postgres and asserts the select columns and their choices; it is the
+regression guard for the issue #1 empty-`enum` bug (which surfaces only on the
+external SQL backends).
+
 ### Continuous integration
 
 A GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every pull request

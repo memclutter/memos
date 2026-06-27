@@ -43,6 +43,9 @@ single Go binary (`nocodb-migrate`) configured entirely from the environment.
   push/PR alongside lint (API client, storage, executor against an in-process
   mock) and by an opt-in integration suite that runs the real `up`/`down` against
   a dockerized NocoDB in a separate CI job.
+- The in-base `Migrations` table is created successfully regardless of the NocoDB
+  backend, including external SQL sources such as MySQL and PostgreSQL, not only
+  the bundled store.
 
 ## Boundaries
 
