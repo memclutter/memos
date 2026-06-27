@@ -21,9 +21,11 @@ generates `enum('up','down')` / `enum('success','failed')` correctly.
 
 - Change `EnsureMigrationsTable` to create the table without the select fields,
   then add `Direction` and `Status` via separate field-create calls.
-- Add a MySQL-backed integration regression test (NocoDB on an external MySQL via
-  testcontainers + a shared network) that creates the Migrations table and
-  asserts success — it fails before the fix and passes after.
+- Add a backend-parameterized integration regression test across **SQLite,
+  MySQL, and Postgres** (the external SQL backends run NocoDB with `NC_DB`
+  pointing at a DB container on a shared testcontainers network) that creates the
+  Migrations table and asserts success — it fails before the fix (MySQL/Postgres)
+  and passes after.
 
 ## Acceptance criteria
 
@@ -31,8 +33,9 @@ generates `enum('up','down')` / `enum('success','failed')` correctly.
   `Status` are real `enum('up','down')` / `enum('success','failed')` columns.
 - `Direction` and `Status` remain SingleSelect with their choices (no downgrade
   to text).
-- The existing SQLite integration test and the full unit suite stay green.
-- The new MySQL-backed regression test guards the fix in CI.
+- The full unit suite stays green.
+- The new backend-parameterized regression test (SQLite / MySQL / Postgres)
+  guards the fix in CI.
 
 ## Out of scope
 

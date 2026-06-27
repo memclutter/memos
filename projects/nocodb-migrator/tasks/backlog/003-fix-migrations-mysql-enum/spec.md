@@ -27,10 +27,11 @@ ENUM DDL on the bulk path.
 
 ## Goal
 
-Make `EnsureMigrationsTable` succeed on every NocoDB backend — including external
-MySQL — while keeping `Direction`/`Status` as SingleSelect, by creating the table
-first and then adding the two select fields via separate field-create calls. Add
-a MySQL-backed regression test so the fix is guarded.
+Make `EnsureMigrationsTable` succeed on every NocoDB backend — the bundled SQLite
+store and external **MySQL** and **PostgreSQL** sources — while keeping
+`Direction`/`Status` as SingleSelect, by creating the table first and then adding
+the two select fields via separate field-create calls. Guard the fix with a
+backend-parameterized regression test across SQLite, MySQL, and Postgres.
 
 ## User journeys
 
@@ -38,20 +39,23 @@ a MySQL-backed regression test so the fix is guarded.
   `nocodb-migrate info` / `up`: the `Migrations` table is created without error,
   with `Direction` and `Status` as proper `enum(...)` columns, and the command
   proceeds.
-- A contributor runs the MySQL-backed integration test; it stands up NocoDB on
-  MySQL, creates the Migrations table, and asserts the select columns and their
-  choices — failing on the old bulk-create code and passing on the fix.
+- A contributor runs the backend-parameterized integration test; for each of
+  SQLite, MySQL, and Postgres it stands up NocoDB on that backend, creates the
+  Migrations table, and asserts the select columns and their choices — failing on
+  the old bulk-create code (at least on MySQL/Postgres) and passing on the fix.
 
 ## Success criteria
 
-- Against a MySQL-backed NocoDB, `EnsureMigrationsTable` succeeds; the physical
-  columns are `enum('up','down')` (Direction) and `enum('success','failed')`
-  (Status). No `ER_PARSE_ERROR`.
+- `EnsureMigrationsTable` succeeds against NocoDB on SQLite, MySQL, and Postgres;
+  on MySQL the `Direction`/`Status` columns are real `enum('up','down')` /
+  `enum('success','failed')`, with no `ER_PARSE_ERROR`, and the equivalent holds
+  on Postgres.
 - `Direction` and `Status` remain SingleSelect carrying their choices — no
   downgrade to `SingleLineText`.
-- The existing SQLite integration suite and the unit suite stay green.
-- A MySQL-backed integration regression test exists, fails against the pre-fix
-  bulk-create path, and passes after the fix; it runs in CI.
+- The unit suite stays green.
+- A backend-parameterized integration regression test covers SQLite, MySQL, and
+  Postgres; it fails against the pre-fix bulk-create path (on the external SQL
+  backends) and passes after the fix; it runs in CI.
 
 ## Affected spec sections
 
@@ -59,12 +63,13 @@ a MySQL-backed regression test so the fix is guarded.
   table is created first and its SingleSelect fields (`Direction`, `Status`) are
   added as separate field-create calls so their choices materialize on every
   backend.
-- spec/quality.md — modify: the integration-test section gains the MySQL-backed
-  regression scenario (NocoDB on an external MySQL source via a shared
-  testcontainers network).
+- spec/quality.md — modify: the integration-test section becomes
+  backend-parameterized — the default bundled-SQLite run plus external MySQL and
+  Postgres sources (NocoDB with `NC_DB` pointing at a DB container on a shared
+  testcontainers network) — as the regression guard for issue #1.
 - spec/overview.md — modify: add a product-wide success criterion that the
-  `Migrations` table is created successfully on external SQL backends (e.g.
-  MySQL), not only the bundled store.
+  `Migrations` table is created successfully on external SQL backends (MySQL and
+  PostgreSQL), not only the bundled store.
 
 ## Target state
 
@@ -79,17 +84,17 @@ external SQL sources such as MySQL.
 
 ### spec/quality.md (after)
 
-The Integration tests section notes a second topology: besides the default
-single-container (bundled store) run, a MySQL-backed scenario starts NocoDB with
-`NC_DB` pointing at a MySQL container on a shared network and asserts that the
-`Migrations` table is created with valid `enum(...)` columns — the regression
-guard for issue #1.
+The Integration tests section becomes backend-parameterized: besides the default
+single-container run on the bundled store (SQLite), MySQL- and Postgres-backed
+scenarios start NocoDB with `NC_DB` pointing at a MySQL or Postgres container on a
+shared network and assert that the `Migrations` table is created with valid
+select columns (e.g. `enum(...)` on MySQL) — the regression guard for issue #1.
 
 ### spec/overview.md (after)
 
 Product-wide success criteria gain: the in-base `Migrations` table is created
 successfully regardless of the NocoDB backend, including external SQL sources
-such as MySQL.
+such as MySQL and PostgreSQL.
 
 ## Out of scope
 

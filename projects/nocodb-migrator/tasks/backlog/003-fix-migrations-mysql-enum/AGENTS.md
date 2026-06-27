@@ -20,19 +20,22 @@ integration regression test.
   `Migrations` table with only the non-select fields (`Timestamp`, `Name`,
   `AppliedAt`), then create `Direction` and `Status` (SingleSelect, with choices)
   via the client's `CreateField`.
-- A MySQL-backed integration regression test (build-tag `integration`): start
-  MySQL + NocoDB (`NC_DB=mysql2://…`) on a shared testcontainers network,
-  bootstrap, and assert `EnsureMigrationsTable` / `runUp` succeed and the select
-  fields carry their choices.
+- A backend-parameterized integration regression test (build-tag `integration`),
+  table-driven over **SQLite, MySQL, Postgres**: for the SQL backends start the DB
+  + NocoDB (`NC_DB=mysql2://…` / `pg://…`) on a shared testcontainers network;
+  bootstrap; assert `EnsureMigrationsTable` succeeds and `Direction`/`Status`
+  carry their choices. Extend `internal/testutil` with a `Backend`-parameterized
+  `StartNocoDBOn`, keeping `StartNocoDB` as the SQLite wrapper.
 
 ## Acceptance criteria
 
-- Against MySQL-backed NocoDB, the Migrations table is created with real
-  `enum('up','down')` / `enum('success','failed')` columns; no `ER_PARSE_ERROR`.
+- `EnsureMigrationsTable` succeeds on SQLite, MySQL, and Postgres; on MySQL the
+  columns are real `enum('up','down')` / `enum('success','failed')` (equivalent on
+  Postgres); no `ER_PARSE_ERROR`.
 - `Direction`/`Status` stay SingleSelect with choices (per the cli.md design
   intent — no `SingleLineText` downgrade).
-- Existing SQLite integration test + unit suite stay green; the new MySQL test
-  fails before the fix and passes after.
+- Unit suite stays green; the new backend-parameterized test fails before the fix
+  (MySQL/Postgres subtests) and passes after; SQLite green throughout.
 
 ## Constraints
 
