@@ -7,12 +7,17 @@
 - Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `ci`, `build`,
   `perf`, `style`.
 - Imperative mood, lowercase summary, no trailing period.
-- **Sign every commit** (`git commit -S`, GPG/SSH) so it shows as Verified on
-  GitHub. The signing key is configured in the owner's git config; enable
-  `commit.gpgsign = true` so signing is automatic. This applies in every repo —
-  the OS repo and each project repo under `vcs/<repo-name>/` (a per-repo
-  `commit.gpgsign` must be set in each, since global config is not inherited by
-  submodule git dirs). Never push an unsigned commit.
+- **Sign every commit to a github.com repository** so it shows as Verified.
+  Signing is wired up globally in the owner's git config (managed via the
+  dotfiles project): `~/.gitconfig` includes `~/.gitconfig_github` (which sets
+  `user.signingkey`, `commit.gpgsign`, and `tag.gpgSign`) only for repos whose
+  remote is on github.com, via `includeIf "hasconfig:remote.*.url:…"`. So any
+  repo with a github remote — the OS repo and every `vcs/<repo-name>/` submodule
+  — signs automatically; non-github repos sign nothing unless they opt in
+  locally. Never push an unsigned commit to a github repo (and `git push
+  --force-with-lease` to re-sign if an unsigned one slipped through). For the SSH
+  remote form, the include pattern must be `git@github.com:*/**` — a bare `**`
+  does not span the `/` after the colon.
 
 ## Branches
 
