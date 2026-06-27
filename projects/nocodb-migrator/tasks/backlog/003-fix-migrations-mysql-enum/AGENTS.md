@@ -46,3 +46,34 @@ integration regression test.
 - Keep the change to the table-creation path; do not alter the migration file
   format or the recorded-row schema.
 - Target Meta API v3 only.
+
+## Tasks breakdown
+
+- [ ] 1. Fix `EnsureMigrationsTable` (`internal/storage/migrations.go`): create the
+  table with only `Timestamp`/`Name`/`AppliedAt`, then add `Direction` and
+  `Status` (SingleSelect + choices) via `client.CreateField`. Make the
+  "table exists" branch idempotent — add any missing select field — so a partial
+  create heals on re-run. (success: table creates on all backends; selects kept)
+- [ ] 2. Update `internal/storage/migrations_test.go` for the new call sequence:
+  assert `EnsureMigrationsTable` issues `CreateTable` (non-select fields) then two
+  `CreateField` calls carrying the right choices; cover the heal-on-existing path.
+  Keep `go test ./...` green.
+- [ ] 3. Backend-parameterize `internal/testutil` (`//go:build integration`):
+  add a `Backend` enum (`SQLite`/`MySQL`/`Postgres`) and `StartNocoDBOn(t, backend)`
+  reusing `bootstrap()`; keep `StartNocoDB` as a thin `SQLite` wrapper so the
+  existing e2e test is untouched. Add the shared-network plumbing (`network.New`).
+- [ ] 4. Add the **MySQL** backend to the helper: `mysql:8` (prefer the
+  testcontainers mysql module) with alias, started/awaited before NocoDB; NocoDB
+  `Env: NC_DB=mysql2://mysql:3306?u=root&p=<pw>&d=nocodb`. Sanity-run.
+- [ ] 5. Add the **Postgres** backend: `postgres:16` (prefer the postgres module)
+  with alias; NocoDB `Env: NC_DB=pg://postgres:5432?u=postgres&p=<pw>&d=nocodb`.
+  Confirm the `NC_DB` shape; sanity-run.
+- [ ] 6. Write the table-driven regression test
+  (`internal/storage/migrations_integration_test.go`, `//go:build integration`)
+  over SQLite/MySQL/Postgres: per backend, `EnsureMigrationsTable()` →
+  `require.NoError`, then assert `Direction`/`Status` are SingleSelect with their
+  choices. Verify it is **red before the fix** (stash step 1, MySQL/Postgres fail)
+  and **green after**.
+- [ ] 7. Final matrix: `go test -tags=integration ./...` green on all backends;
+  default `go test ./...` + `golangci-lint` (both tag sets) clean; confirm the CI
+  `integration` job picks up the new test (pulls `mysql:8`/`postgres:16`).
