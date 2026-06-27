@@ -5,6 +5,25 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-06-27
+
+Onboarded the first application project, `nocodb-migrator`, and drove it end to
+end through the SDD task loop.
+
+### Added
+
+- The `nocodb-migrator` project: specified, then delivered through the SDD task
+  loop — 001 (unit tests, CI, pre-commit), 002 (integration tests against a
+  dockerized NocoDB via testcontainers-go), and 003 (fix for `Migrations`-table
+  creation on external MySQL/PostgreSQL backends, reproduced and root-caused).
+  Submodule pinned at nocodb-migrator `v0.0.2`.
+- Playwright MCP server config (`.mcp.json`, `.cursor/mcp.json`).
+
+### Changed
+
+- Commit signing: require signed commits, scoped to GitHub via a conditional
+  include; recorded the intent in the dotfiles spec.
+
 ## [0.1.0] - 2026-06-26
 
 Project submodule layout, the first onboarded project, and broader tooling.
@@ -73,6 +92,7 @@ Initial release.
 - Initial rules (data, Docker, Git, languages, project structure, tasks,
   workflow) and the `skills/` and `projects/` scaffolding.
 
+[0.2.0]: https://github.com/memclutter/memos/releases/tag/v0.2.0
 [0.1.0]: https://github.com/memclutter/memos/releases/tag/v0.1.0
 [0.0.3]: https://github.com/memclutter/memos/releases/tag/v0.0.3
 [0.0.2]: https://github.com/memclutter/memos/releases/tag/v0.0.2
