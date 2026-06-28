@@ -4,3 +4,6 @@
 [submodule "projects/nocodb-migrator/vcs/nocodb-migrator"]
 	path = projects/nocodb-migrator/vcs/nocodb-migrator
 	url = git@github.com:memclutter/nocodb-migrator.git
+[submodule "projects/confparse/vcs/confparse"]
+	path = projects/confparse/vcs/confparse
+	url = git@github.com:memclutter/confparse.git
