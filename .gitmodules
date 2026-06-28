@@ -7,3 +7,6 @@
 [submodule "projects/confparse/vcs/confparse"]
 	path = projects/confparse/vcs/confparse
 	url = git@github.com:memclutter/confparse.git
+[submodule "projects/proxycheck/vcs/proxycheck"]
+	path = projects/proxycheck/vcs/proxycheck
+	url = git@github.com:memclutter/proxycheck.git
