@@ -1,6 +1,6 @@
 ---
 id: 002-fix-judge-flag
-status: active
+status: done
 created: 2026-06-28
 updated: 2026-06-28
 ---
@@ -63,6 +63,6 @@ TDD order: write tests, confirm red, implement, confirm green.
 - [x] 6. 🟢 Tests from steps 2–3 pass in 0.004s (regression gone).
 - [x] 7. Green-gate: `go vet`, `go test ./... -race` (1.0s), `gofmt -l` (clean),
   `golangci-lint run` all exit 0. [spec: CI stays green]
-- [ ] 8. Update `projects/proxycheck/spec/cli.md` per spec.md Target state (real
-  `--judge` behaviour + new success criterion) — done at Finish via
-  `sys.task.finish`, listed here for traceability.
+- [x] 8. Update `projects/proxycheck/spec/cli.md` per spec.md Target state (real
+  `--judge` behaviour + new success criterion) — folded in at Finish. PR #2
+  merged (squash, `45c3555`).

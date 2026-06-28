@@ -26,9 +26,10 @@ proxycheck [--judge <name>] [--threads <n>] [ip:port ...]
 
 - `--threads <n>` — size of the worker pool that checks proxies concurrently.
   Default `10`.
-- `--judge <name>` — names a proxy judge. Default `proxyjudge.us`. *Current
-  shipped behaviour:* the flag is accepted but the engine always uses the AZEnv
-  judge (`http://www.wfuchs.de/azenv.php`); the value is not yet wired through.
+- `--judge <name>` — names the proxy judge to check through. Resolved against the
+  `Judges` registry (`azenv.php`, `proxyjudge.us`). Default `proxyjudge.us`. An
+  unknown name is rejected: the command prints `unknown judge: <name>` with the
+  list of valid names and exits non-zero without checking any proxy.
 
 **Concurrency.** A pool of `--threads` workers pulls proxies from the feed and
 runs a [check](checking.md) on each. One slow or unreachable proxy only occupies
@@ -56,3 +57,5 @@ list onward while still seeing failures.
   failing proxies appear only on stderr.
 - `--threads` bounds the number of concurrent checks; the command terminates
   once the feed is exhausted and all workers finish.
+- `--judge` selects the judge used for checking; an unknown judge name is
+  rejected with a non-zero exit and no proxies are checked.
