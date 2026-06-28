@@ -113,18 +113,18 @@ jobs:
           go-version: '1.26'
       - uses: golangci/golangci-lint-action@v6
         with:
-          version: v2.5.0
+          version: v2.12.2
 ```
 
 Notes:
 - The core bug fix: `go-version` now reads a real value (`'1.26'`, the latest
   pinned Go) instead of the empty `${{ matrix.go }}`.
 - Lint runs once on Ubuntu — no OS/Go matrix. Linting is platform-independent.
-- `version: v2.5.0` replaces the pinned `v1.42.1` — a *pinned* current linter,
+- `version: v2.12.2` replaces the pinned `v1.42.1` — a *pinned* current linter,
   not `latest`. Same reproducibility argument as the Go versions: a fixed linter
   means a red lint reflects our code, not a new rule shipped upstream. The repo
   has no `.golangci.yml`, so golangci-lint v2 default rules apply and need no
-  config migration. (Implementer: confirm `v2.5.0` is a real release compatible
+  config migration. (Implementer: confirm `v2.12.2` is a real release compatible
   with Go 1.26 at execution time; if not, pin the nearest current v2 patch.)
 - The non-existent `master` branch trigger is dropped; `tags: v*` is kept so
   release tags still get linted.
@@ -144,7 +144,7 @@ Notes:
   appears (noted in spec Out of scope).
 - **Pinned `golangci-lint` vs `latest`.** Same call as the Go versions: `latest`
   can introduce new findings on an unrelated run, so the linter is pinned
-  (`v2.5.0`). Bumping it is a deliberate follow-up when we choose to.
+  (`v2.12.2`). Bumping it is a deliberate follow-up when we choose to.
 - **Keeping Codecov vs dropping it.** Owner chose to keep it and will add the
   `CODECOV_TOKEN` secret. `fail_ci_if_error: false` ensures an upload hiccup
   never reds the build — coverage reporting is informational, not a gate.
@@ -159,7 +159,7 @@ Notes:
   changing `go.mod` in this task (would be a separate, deliberate decision per
   spec Boundaries).
 - **Pinned versions must be real, current releases.** Verify at execution time
-  that Go `1.25` and `1.26` and golangci-lint `v2.5.0` exist and are mutually
+  that Go `1.25` and `1.26` and golangci-lint `v2.12.2` exist and are mutually
   compatible; adjust the exact pins to the nearest current release if any has
   moved. This is the deliberate-bump cost of pinning.
 - **New linter may surface findings** the old `v1.42.1` missed. If lint fails on
