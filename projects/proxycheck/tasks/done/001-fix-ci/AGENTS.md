@@ -1,6 +1,6 @@
 ---
 id: 001-fix-ci
-status: active
+status: done
 created: 2026-06-28
 updated: 2026-06-28
 ---
@@ -59,11 +59,11 @@ pins the new submodule commit at Finish.
   without `PROXY_URL`/`TARGET_URL` — expected) and `golangci-lint run` if
   available; fix any real lint findings minimally without changing behaviour.
   (Plan: Testing strategy)
-- [ ] 6. Confirm the owner has added the `CODECOV_TOKEN` secret before relying on
+- [x] 6. Confirm the owner has added the `CODECOV_TOKEN` secret before relying on
   upload. ⚠️ ask owner. (Plan: Constraints & risks)
 - [x] 7. Commit on a branch in `vcs/proxycheck/`, push, open a PR, and confirm
   both `go` and `golangci-lint` checks go green — inspect logs that both Go legs
   run, the service-backed tests execute (not skipped), and no 403/deprecation
   failures appear. (Success criteria: green on push and PR)
-- [ ] 8. Merge, then bump the submodule pin in the OS repo
+- [x] 8. Merge, then bump the submodule pin in the OS repo
   (`chore(submodule): bump proxycheck`). Hand off to `sys.task.finish`.

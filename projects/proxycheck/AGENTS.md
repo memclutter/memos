@@ -40,5 +40,7 @@ tests.
 - Proxy addresses are `ip:port` strings; a bare `ip` defaults to port `80`.
 - The protocol set tried per proxy is fixed: `http`, `https`, `socks4`,
   `socks5`. A proxy is "online" if at least one protocol reaches the judge.
+- Minimum supported Go is **1.25** (`go.mod` directive); CI runs the two latest
+  stable releases (`1.25`, `1.26`) on Ubuntu and lints with golangci-lint v2.
 - Source changes are committed and pushed inside `vcs/proxycheck/`, then this OS
   pins the new submodule commit (`chore(submodule): bump proxycheck`).
