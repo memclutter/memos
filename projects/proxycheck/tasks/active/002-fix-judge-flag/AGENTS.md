@@ -1,6 +1,6 @@
 ---
 id: 002-fix-judge-flag
-status: backlog
+status: active
 created: 2026-06-28
 updated: 2026-06-28
 ---
@@ -40,26 +40,29 @@ task wires up the existing two, it does not add judges. Source changes happen in
 
 TDD order: write tests, confirm red, implement, confirm green.
 
-- [ ] 1. Extract `NewApp() *cli.App` (judge + threads flags, `Action`) shared by
+- [x] 1. Extract `NewApp() *cli.App` (judge + threads flags, `Action`) shared by
   `cmd/main.go` and tests; collapse `main` to `NewApp().Run(os.Args)`. No
   behaviour change yet — keeps the hardcoded judge for now.
-- [ ] 2. 🔴 Add regression test `cli_test.go`: `NewApp().Run(["proxycheck",
+- [x] 2. 🔴 Add regression test `cli_test.go`: `NewApp().Run(["proxycheck",
   "--judge", "foo", "not-an-addr"])` must return an error mentioning
-  `unknown judge: foo`. Run it and confirm it **fails** on current code (proves
-  the bug). [spec: unknown name → non-zero, nothing probed]
-- [ ] 3. 🔴 Add unit test in `judges_test.go` for `ResolveJudge`: `azenv.php` and
+  `unknown judge: foo`. Confirmed RED on current code — it did not abort, printed
+  `invalid proxy not-an-addr` and then hung at `wg.Wait()` (60s timeout),
+  surfacing the channel-close deadlock too. [spec: unknown name → non-zero]
+- [x] 3. 🔴 Add unit test in `judges_test.go` for `ResolveJudge`: `azenv.php` and
   `proxyjudge.us` resolve to the right judge (no error); `foo` errors with a
-  message listing both valid names. Confirm it **fails to compile/pass** (proves
-  the gap). [spec: registry lookup + default]
-- [ ] 4. Implement `ResolveJudge(name) (Judge, error)` and `judgeNames()` (sorted
+  message listing both valid names. Red (function absent). [spec: registry lookup]
+- [x] 4. Implement `ResolveJudge(name) (Judge, error)` and `judgeNames()` (sorted
   keys, comma-joined) in `judges.go`.
-- [ ] 5. Wire `Action` (`cli.go`): resolve judge from `c.String("judge")` before
+- [x] 5. Wire `Action` (`cli.go`): resolve judge from `c.String("judge")` before
   the pool, `return err` on failure, pass the resolved `Judge` to every worker;
   remove the hardcoded `&AZEnvPhpJudge{}`. [spec: flag selects judge; default
   `proxyjudge.us` now in effect]
-- [ ] 6. 🟢 Run the tests from steps 2–3 and confirm they pass (regression gone).
-- [ ] 7. Green-gate: `go build ./...`, `go test ./... -race`, `gofmt`/`goimports`,
-  `golangci-lint run` all clean. [spec: CI stays green]
+- [x] 5b. Fix the discovered deadlock: `close(proxyAddrs)` after the feed loop so
+  workers' range loops end and `wg.Wait()` returns (owner-approved, in scope).
+  [spec/cli.md: program exits once the feed is exhausted]
+- [x] 6. 🟢 Tests from steps 2–3 pass in 0.004s (regression gone).
+- [x] 7. Green-gate: `go vet`, `go test ./... -race` (1.0s), `gofmt -l` (clean),
+  `golangci-lint run` all exit 0. [spec: CI stays green]
 - [ ] 8. Update `projects/proxycheck/spec/cli.md` per spec.md Target state (real
   `--judge` behaviour + new success criterion) — done at Finish via
   `sys.task.finish`, listed here for traceability.

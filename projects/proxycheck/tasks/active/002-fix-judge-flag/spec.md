@@ -14,6 +14,13 @@ hardcoded judge, and `c.String("judge")` is never read. So:
 
 A user choosing a judge gets no say, and the help text lies about the default.
 
+**Discovered during implementation (in scope, owner-approved):** `Action` never
+`close()`s its `proxyAddrs` channel, so the workers' `for range` loops never end
+and `wg.Wait()` blocks forever — the CLI hangs after processing all proxies
+instead of exiting. It was never caught because `Action` had no test. Fixed here
+together with the judge flag; both are bugs in the same function and the project
+spec already requires the program to exit once the feed is exhausted.
+
 ## Goal
 
 Make `--judge <name>` actually select the proxy judge, resolved through the
