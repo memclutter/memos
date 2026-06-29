@@ -10,3 +10,12 @@
 [submodule "projects/proxycheck/vcs/proxycheck"]
 	path = projects/proxycheck/vcs/proxycheck
 	url = git@github.com:memclutter/proxycheck.git
+[submodule "projects/gorequests/vcs/gorequests"]
+	path = projects/gorequests/vcs/gorequests
+	url = git@github.com:memclutter/gorequests.git
+[submodule "projects/gorequests/vcs/gorequests-proxy"]
+	path = projects/gorequests/vcs/gorequests-proxy
+	url = git@github.com:memclutter/gorequests-proxy.git
+[submodule "projects/gorequests/vcs/gorequests-retry"]
+	path = projects/gorequests/vcs/gorequests-retry
+	url = git@github.com:memclutter/gorequests-retry.git
