@@ -43,3 +43,16 @@ three questions for a startup partner:
 - Do not add CI, workflows, or scripts to the `memclutter/memclutter` repo.
 - Keep Conventional Commits inside the submodule.
 - Ask the owner before removing the Connect / social links section.
+
+## Tasks breakdown
+
+- [ ] 1. Verify `vaibe-studio/vaibe-os` is public: `gh repo view vaibe-studio/vaibe-os --json visibility`  ⚠️ stop and ask owner if private
+- [ ] 2. Verify all four `memclutter/*` repos are public: confparse, gorequests, nocodb-migrator, proxycheck
+- [ ] 3. Write new `vcs/memclutter/README.md` matching the Target State in `spec.md` (5 sections: Header → About → Tech Stack → Open-source projects → Connect)
+- [ ] 4. Sanity-check the file: count `## ` headings (expect 4), grep confirms 0 hits for `github-readme-stats`, `streak-stats`, `BLOG-POST-LIST`
+- [ ] 5. Commit inside the submodule: `git commit -m "feat: refresh profile README"`
+- [ ] 6. Push submodule to GitHub: `git push origin main`
+- [ ] 7. Visual check: open `github.com/memclutter` in browser — render correct, role + contact visible above fold at 1080 p
+- [ ] 8. Bump submodule pointer in OS repo: `git add projects/memclutter/vcs/memclutter && git commit -m "chore(submodule): bump memclutter"`
+- [ ] 9. Update `projects/memclutter/spec/profile.md` to Target State from `spec.md`
+- [ ] 10. Update `projects/memclutter/spec/overview.md` Vision paragraph to Target State from `spec.md`
