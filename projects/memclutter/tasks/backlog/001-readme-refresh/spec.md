@@ -20,8 +20,9 @@ three concrete issues:
 ## Goal
 
 A lean profile README that a startup partner can read in under 60 seconds and
-walk away knowing: this person builds backend/DevOps tooling in Go, here are
-their real projects, here is how to reach them.
+walk away knowing: this person builds backend/DevOps tooling in Go, is a
+co-founder of vAIbe Studio, here are their real projects, here is how to reach
+them.
 
 ## User journeys
 
@@ -48,6 +49,10 @@ their real projects, here is how to reach them.
       under `memclutter`.
 - [ ] Featured Projects lists only repos present in `projects/` of the memos
       OS: **confparse**, **gorequests**, **nocodb-migrator**, **proxycheck**.
+- [ ] About section mentions co-founder role at vAIbe Studio with a link to
+      [vaibe.studio](https://vaibe.studio).
+- [ ] vAIbe-OS (`github.com/vaibe-studio/vaibe-os`) is listed in Open-source
+      projects alongside the memos OS repos.
 - [ ] GitHub Stats / Streak widgets: at most one widget, or removed entirely.
 - [ ] "Latest Articles" section removed.
 - [ ] Tech Stack collapsed: one compact section (badges or plain text) covering
@@ -86,8 +91,9 @@ The README is organised into the following sections in order:
 - One-line subtitle (plain text or italic): role + years of experience.
 
 **About**
-Short paragraph or 3-bullet list covering: current role, primary skills
-(Go, Python, DevOps/SRE), and what kind of collaboration they are open to.
+Short paragraph or 3-bullet list covering: current role, co-founder of
+[vAIbe Studio](https://vaibe.studio), primary skills (Go, Python, DevOps/SRE),
+and what kind of collaboration they are open to.
 No animated SVGs in the header — optional single typing SVG is acceptable.
 
 **Tech Stack**
@@ -97,17 +103,20 @@ No sub-categories, no Monitoring/Logging category, no Ansible, no MongoDB,
 no RabbitMQ, no Bash, no JavaScript as separate entries.
 
 **Open-source projects**
-A flat bulleted list (no sub-sections) of the repos tracked in the memos OS:
+A flat bulleted list (no sub-sections). Includes repos tracked in the memos OS
+plus vAIbe-OS:
 
-| Repo | Description |
-|------|-------------|
-| confparse | Declarative CLI flag & config parser for Go — struct tags to flags with env fallbacks. Zero deps. |
-| gorequests | Fluent HTTP client wrapper for Go: build, send, decode in one chain. |
-| nocodb-migrator | CLI for versioned schema & data migrations in NocoDB via Meta API v3. |
-| proxycheck | Fast concurrent proxy checker for HTTP, HTTPS, SOCKS4/5 — CLI + library. |
+| Repo | Org | Description |
+|------|-----|-------------|
+| vaibe-os | vaibe-studio | Personal OS for running open-source projects — rules, skills, and agent workflows. |
+| confparse | memclutter | Declarative CLI flag & config parser for Go — struct tags to flags with env fallbacks. Zero deps. |
+| gorequests | memclutter | Fluent HTTP client wrapper for Go: build, send, decode in one chain. |
+| nocodb-migrator | memclutter | CLI for versioned schema & data migrations in NocoDB via Meta API v3. |
+| proxycheck | memclutter | Fast concurrent proxy checker for HTTP, HTTPS, SOCKS4/5 — CLI + library. |
 
 **Connect**
-Four flat-square badges: Website (memclutter.me), Telegram, LinkedIn, GitHub.
+Five flat-square badges: vAIbe Studio (vaibe.studio), Website (memclutter.me),
+Telegram, LinkedIn, GitHub.
 Twitter badge removed (low signal for startup partners).
 
 **Removed sections (compared to current)**
@@ -121,8 +130,10 @@ Twitter badge removed (low signal for startup partners).
 
 - Adding new repos to the OS or to GitHub (that is a separate task per repo).
 - Writing actual blog articles.
-- Updating `memclutter.me` website.
+- Updating `memclutter.me` or `vaibe.studio` websites.
 - Changing the GitHub username or account settings.
+- Specifying or importing `vaibe-os` as a project in the memos OS (separate
+  task if needed).
 
 ## Boundaries
 

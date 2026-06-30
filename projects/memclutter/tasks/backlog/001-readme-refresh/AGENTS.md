@@ -15,8 +15,9 @@ is and how to reach them.
 Replace the current bloated profile page with a lean document that answers
 three questions for a startup partner:
 
-1. Who is this person and what do they build?
-2. What are their real, live open-source projects?
+1. Who is this person and what do they build? (include: co-founder of
+   [vAIbe Studio](https://vaibe.studio))
+2. What are their real, live open-source projects? (include vaibe-os)
 3. How do I contact them?
 
 ## Scope
@@ -29,8 +30,8 @@ three questions for a startup partner:
 
 - Every repo in Featured Projects exists as a public GitHub repo under
   `memclutter`.
-- Featured Projects lists only repos present in `projects/` of the memos OS
-  (currently: confparse, gorequests, nocodb-migrator, proxycheck).
+- Featured Projects lists repos tracked in the memos OS (confparse, gorequests,
+  nocodb-migrator, proxycheck) plus vaibe-studio/vaibe-os.
 - GitHub Stats and Streak widgets: at most one (or none).
 - "Latest Articles" section removed.
 - "Tech Stack" either removed or collapsed to a single compact line/group.
