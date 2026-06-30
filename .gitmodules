@@ -19,3 +19,6 @@
 [submodule "projects/gorequests/vcs/gorequests-retry"]
 	path = projects/gorequests/vcs/gorequests-retry
 	url = git@github.com:memclutter/gorequests-retry.git
+[submodule "projects/memclutter/vcs/memclutter"]
+	path = projects/memclutter/vcs/memclutter
+	url = git@github.com:memclutter/memclutter.git
