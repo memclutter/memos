@@ -3,7 +3,8 @@
 ## Purpose
 
 Define the sections of the GitHub profile README, what each contains, and the
-visual conventions that keep it consistent.
+visual conventions that keep it consistent. The target audience is startup
+founders and technical co-founders.
 
 ## Behaviour
 
@@ -12,82 +13,60 @@ in order:
 
 ### Header
 
-- An animated typing SVG from `readme-typing-svg.herokuapp.com` centred on the
-  page; cycles through: "Backend / DevOps / SRE Engineer", "8+ Years of
-  Experience", "Golang • Python • Bash", "Kubernetes • Terraform • AWS".
+- H1 greeting: `# Hi, I'm memclutter`
+- Animated typing SVG from `readme-typing-svg.herokuapp.com`, centred; cycles
+  through: "Backend / DevOps / SRE Engineer", "Co-founder @ vAIbe Studio",
+  "8+ Years Building Production Systems".
 - Font: Fira Code, colour `#2E9EF7`.
 
-### About Me
+### About
 
-A short bulleted list with five entries:
+A bulleted list with five entries:
 
 | Bullet | Content |
 |--------|---------|
-| Currently working at | **Fabrique Studio** (Moscow) |
-| Learning | **Rust**, **Service Mesh (Istio)**, **eBPF** |
-| Ask me about | **Golang**, **Python**, **Kubernetes**, **Terraform**, **CI/CD** |
-| How to reach me | [memclutter.me](https://memclutter.me) |
-| Fun fact | "I love solving complex scalability challenges" |
+| Role | Backend / DevOps / SRE engineer with 8+ years in high-load systems |
+| Company | Co-founder @ [vAIbe Studio](https://vaibe.studio) — AI-native products & tooling |
+| Open to | technical co-founder & early-stage startup partnerships |
+| Core skills | Go · Python · Kubernetes · Terraform · PostgreSQL |
+| Reach me | [Telegram](https://t.me/memclutter) · [memclutter.me](https://memclutter.me) |
 
 ### Tech Stack
 
-Badge grid grouped by category (`style=for-the-badge`, white logo colour where
-applicable):
+One flat group of `for-the-badge` badges, no sub-categories:
+Go, Python, PostgreSQL, Redis, Docker, Kubernetes, Vue.js.
 
-| Category | Badges |
-|----------|--------|
-| Languages | Go, Python, Bash, JavaScript |
-| DevOps & Cloud | Kubernetes, Docker, Terraform, Ansible |
-| Databases & Message Queues | PostgreSQL, MongoDB, Redis, RabbitMQ |
-| Monitoring & Logging | Prometheus, Grafana |
-| Frontend | Vue.js |
+### Open-source projects
 
-### GitHub Statistics
+A flat bulleted list (no sub-sections):
 
-Three widgets from `github-readme-stats` / `github-readme-streak-stats`,
-centred, theme `tokyonight`, `hide_border=true`:
-- GitHub Stats (shows icons)
-- Top Languages (compact layout)
-- GitHub Streak
-
-### Featured Projects
-
-Four sub-sections (Golang, Infrastructure as Code, Python DevOps, Other
-Projects), each a bulleted list of linked repo names with one-line descriptions.
-Current entries:
-
-| Repo | Description |
-|------|-------------|
-| go-microservices-template | Production-ready microservice architecture template |
-| kubernetes-ops-toolkit | CLI tools for K8s cluster management |
-| gocore | Collection of useful patterns and snippets |
-| terraform-aws-modules | Terraform modules for AWS |
-| ansible-infrastructure | Ansible playbooks for server configuration |
-| kubernetes-manifests | Helm charts for production stacks |
-| devops-automation-python | Cloud platform automation scripts |
-| ci-cd-helpers | Utilities for CI/CD pipelines |
-| vue-admin-monitoring | Monitoring admin dashboard |
-| algorithms-golang | Algorithm problem solutions |
-
-### Latest Articles
-
-Placeholder block wrapped in `<!-- BLOG-POST-LIST:START/END -->` comments; body
-currently reads "Coming soon: articles about DevOps practices".
+| Repo | Org | Description |
+|------|-----|-------------|
+| [vaibe-os](https://github.com/vaibe-studio/vaibe-os) | vaibe-studio | Personal OS for running open-source projects — rules, skills, and agent workflows. |
+| [confparse](https://github.com/memclutter/confparse) | memclutter | Declarative CLI flag & config parser for Go. Struct tags to flags with env fallbacks. Zero deps. |
+| [gorequests](https://github.com/memclutter/gorequests) | memclutter | Fluent HTTP client for Go: build, send, and decode requests in one chain. |
+| [nocodb-migrator](https://github.com/memclutter/nocodb-migrator) | memclutter | Versioned schema & data migrations for NocoDB via Meta API v3. |
+| [proxycheck](https://github.com/memclutter/proxycheck) | memclutter | Concurrent proxy checker for HTTP/HTTPS/SOCKS4/5 — CLI + library. |
 
 ### Connect
 
-Four flat-square badges linking to: Website (memclutter.me), LinkedIn, Twitter,
-Telegram.
+Five `flat-square` badges in order: vAIbe Studio (vaibe.studio), Website
+(memclutter.me), Telegram, LinkedIn, GitHub.
 
-### Footer
+### Removed sections (vs. previous version)
 
-Profile-view counter (`komarev.com/ghpvc`) and "⭐️ From memclutter" attribution,
-both centred.
+- GitHub Statistics (3 widgets)
+- GitHub Streak widget
+- Top Languages widget
+- Featured Projects sub-categories (Golang / IaC / Python DevOps / Other)
+- Latest Articles placeholder block
+- Footer profile-view counter
 
 ## Success criteria
 
-- Every linked repo in Featured Projects exists and is public under
-  `github.com/memclutter`.
-- All external widget/badge URLs return HTTP 200.
-- The README renders identically in GitHub's light and dark themes (badge text
-  remains legible in both).
+- Every linked repo in Open-source projects exists and is public under its org.
+- All external badge/widget URLs return HTTP 200.
+- The README renders identically in GitHub's light and dark themes.
+- A visitor sees the owner's role, co-founder status, and primary contact
+  without scrolling at 1080 p viewport.
+- Total `##` sections = 4 (About, Tech Stack, Open-source projects, Connect).

@@ -3,10 +3,10 @@
 ## Vision
 
 A single Markdown file rendered by GitHub as the public face of the
-`memclutter` account. Its audience is anyone landing on
-[github.com/memclutter](https://github.com/memclutter): recruiters, open-source
-collaborators, or curious developers. The page answers three questions at a
-glance — who is this person, what do they build, and how to reach them.
+`memclutter` account. Its primary audience is startup founders and technical
+co-founders evaluating a potential backend/DevOps partner. The page answers
+three questions quickly — who is this person, what have they actually shipped,
+and how to start a conversation.
 
 ## Capabilities
 
@@ -16,8 +16,8 @@ glance — who is this person, what do they build, and how to reach them.
 
 - The README renders without errors in GitHub's Markdown engine.
 - All badge and widget URLs are reachable and return valid images.
-- A visitor can identify the owner's role, core skills, and primary contact
-  channel within 30 seconds of landing on the page.
+- A visitor can identify the owner's role, co-founder status, core skills, and
+  primary contact channel within 30 seconds of landing on the page.
 
 ## Boundaries
 
