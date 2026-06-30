@@ -1,6 +1,6 @@
 ---
 id: 001-readme-refresh
-status: active
+status: done
 created: 2026-06-30
 updated: 2026-06-30
 ---
