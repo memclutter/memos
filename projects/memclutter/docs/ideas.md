@@ -2,137 +2,454 @@
 
 ## Why this list exists
 
-The `memclutter` GitHub profile ([profile.md](../spec/profile.md)) currently
-showcases backend/DevOps tooling (Go CLIs, infra utilities) but almost nothing
-that signals **AI engineer** depth — ai-native products, agent workflows,
-LLM tooling. The goal of this document is to generate, vet, and tier candidate
-projects that close that gap **without abandoning the existing moat**: 8+
-years of backend/SRE/DevOps (Go, Python, Kubernetes, Terraform, Postgres,
-Redis) is the differentiator versus the flood of thin prompt-wrapper repos. The
-strongest ideas sit at the intersection of *infra/platform engineering* and
-*AI-native workflows* — not at "yet another chatbot UI."
+The `memclutter` GitHub profile ([profile.md](../spec/profile.md)) showcases
+backend/DevOps tooling but almost nothing that signals **AI engineer** depth.
+This backlog is scoped to seven directions the owner actually wants to spend
+time in, not an abstract "what's trendy in AI" brainstorm:
 
-This file is a backlog of raw ideas, not specs. A promising idea graduates into
-a real task via `sys.task.specify` (or a brand-new project via
-`sys.project.specify`) only after it survives the filter in step 4 below.
+1. **AI-workflow** — real automation/integration work: something that plugs
+   AI into an actual business process end to end, not a demo.
+2. **Games / GameFi** — for the fun of it. Every programmer wants to ship a
+   game at some point; this is the deliberate "portfolio has a pulse" slot.
+3. **DevOps tools** — following the `nocodb-migrator` playbook exactly:
+   [`nocodb-migrator`](https://github.com/memclutter/nocodb-migrator) got
+   real reach and a fork not because it was a clever abstraction, but because
+   it closed one concrete, currently-missing capability (versioned
+   migrations via NocoDB's Meta API v3) in a tool the owner actually uses.
+   **Not** another `mcp-for-postgres`-shaped abstraction exercise — a
+   specific, validated gap in a specific, currently-popular tool.
+4. **AI aggregators** — a curated, opinionated view over some slice of the
+   AI ecosystem, valuable because of the curation/verification, not because
+   listing things is hard.
+5. **Enterprise (simple)** — a narrow, boring tool that closes one concrete
+   pain a large organization actually has budget and urgency for — not a
+   platform, one wedge.
+6. **Hardware / Arduino** — physical projects; the point is tactile fun and
+   a portfolio that isn't 100% screens, with an AI-native crossover where it
+   fits naturally rather than forced.
+7. **Hobby moonshot** — one big, deliberately low-ROI "build your own X"
+   epic (in the spirit of writing your own OS) — pursued for mastery
+   signal and personal growth, not for adoption or revenue.
+
+This file is a backlog of raw ideas, not specs. An idea graduates into a real
+task via `sys.task.specify` (or a new project via `sys.project.specify`) only
+after it survives the filter in §1.4, and — for the DevOps direction
+specifically — only after the gap is confirmed first-hand (see §1.2), the way
+the NocoDB migrations gap was found by actually hitting the wall while using
+NocoDB, not by reading about it.
 
 ## 1. Idea-generation algorithm
 
-1. **Map strengths → AI-infra needs.** For each core skill (Go, Python,
-   Kubernetes, Terraform, Postgres, Redis, Vue), list the adjacent pain point
-   in the current AI tooling stack: agent runtimes, LLM observability, eval
-   pipelines, RAG infra, MCP tooling, FinOps for LLM spend, sandboxing for
-   agent-executed code. Backend/DevOps skill + AI-native problem = candidate
-   idea.
-2. **Sweep sources for signal.** On a recurring cadence (see §3), scan the
-   sources below for: recurring complaints ("there's no good X for Y"), a
-   newly-published spec/protocol worth tooling around (e.g. MCP), a
-   trending-but-immature GitHub repo with an obvious gap, or a job-posting
-   pattern repeating a skill not yet represented in the profile.
-3. **Draft the one-liner.** For each signal, write a single sentence: problem,
-   who hits it, why *this* author (backend/DevOps background) is credible to
-   build it. Discard anything that is a pure prompt wrapper with no infra
-   component — it doesn't differentiate the profile.
-4. **Score and filter.** Rate every surviving one-liner 1–3 on:
-   - **Signal** — does it visibly demonstrate ai-native/agent/LLM-workflow
-     skill, not just "calls an API"?
-   - **Moat** — does it lean on Go/Python/K8s/Terraform/Postgres/Redis in a
-     way a non-infra person couldn't replicate quickly?
-   - **Scope** — buildable and shippable solo within a bounded timeframe?
-   - **Testability** — can correctness be demonstrated with automated tests
-     (unit/integration/eval), not just a demo gif?
-   Keep anything scoring ≥ 2 on all four; drop the rest from this file.
-5. **Tier by implementation + testing weight** (see §3 below) so the backlog
-   always has a quick win available alongside a flagship bet.
-6. **Promote, don't accumulate.** Re-review this list monthly: prune ideas a
-   third party has already shipped well, or that no longer reflect current
-   tooling (e.g. a protocol superseded); promote at most one Tier 1–2 idea
-   per cycle into an actual task/project so the backlog stays a backlog, not a
-   museum.
+1. **Pick the direction first**, not the technology. Every idea below is
+   already tagged AI-workflow, Games/GameFi, or DevOps — new ideas should be
+   generated by working the direction's own loop (2a/2b/2c), not by staring
+   at the tech stack and asking "what could I build."
+2. **Find the gap with direction-specific evidence, not vibes:**
+   - **(a) AI-workflow** — pick a real, recurring business process (support
+     triage, incident response, content ops, sales ops) and ask: where does
+     the human currently do repetitive judgment-calls that an LLM + a couple
+     of real integrations (Slack, email, a ticketing API, the actual
+     infra APIs) could take over end-to-end? The test: could a non-technical
+     person watch it run and immediately see the workflow it replaces?
+   - **(b) Games/GameFi** — pick a genre small enough to finish solo, and
+     bias toward something that *also* touches AI-native skill (e.g. agents
+     as players) so it isn't a pure detour from the portfolio's thesis — but
+     don't force it; a genuinely fun, well-made toy is allowed to exist for
+     its own sake.
+   - **(c) DevOps tools** — **use the tool yourself** first. Run the
+     self-hosted app/platform for real. When something is missing or
+     broken, open its GitHub **Issues**, sorted by reactions/comments, and
+     check: (i) is this still unsolved, (ii) has someone already shipped a
+     complete fix (if so, drop it — see `Coolify` case study below), (iii)
+     did a maintainer explicitly say "out of scope, use a third-party tool"
+     (that's a green light, not a rejection — see `Immich` case study
+     below).
+   - **(d) AI aggregators** — don't start from "what could I list," start
+     from "what decision are people currently making badly/slowly because
+     no trustworthy, curated view exists." Check whether the space is
+     already crowded by well-funded entrants (see the MCP-registry case
+     study in §2d) before committing — an aggregator's entire value is
+     being *the* trusted one, and a solo late entrant rarely displaces an
+     incumbent with funding and a head start.
+   - **(e) Enterprise (simple)** — look for the pain that's currently being
+     solved by an expensive, closed SaaS platform, and ask whether a narrow,
+     self-hostable, open-source slice of it is enough for engineering-led
+     orgs that don't want to buy (or can't yet justify) the full platform.
+     The differentiator is "simple and self-hosted," not "more features."
+   - **(f) Hardware/Arduino** — start from something physically useful in
+     the owner's own homelab/desk setup (status, monitoring, a physical
+     trigger) rather than a generic "cool Arduino project"; the personal-use
+     test doubles as the scope check — if it's not useful enough to actually
+     keep running on the desk, it's not done.
+   - **(g) Hobby moonshot** — explicitly exempt from the pain-validation and
+     scope requirements above. Pick one "build your own X" epic for mastery,
+     not adoption; the only filter is personal conviction to see it through
+     over months, and — since it won't sell itself on utility — a
+     willingness to document the journey (blog/notes) so it still generates
+     *some* portfolio signal even without users.
+3. **Write the one-liner with the evidence attached**: problem, who hits it,
+   the specific GitHub issue/thread/maintainer quote that proves it's real
+   and still open, and why *this* author (backend/DevOps background) is
+   credible to build it.
+4. **Score and filter**, 1–3 on each, keep ≥2 on all four (direction (g), the
+   hobby moonshot, is explicitly exempt — see above):
+   - **Pain validation** — a specific, still-open, multi-person complaint
+     source exists (not "I imagine this is annoying").
+   - **Differentiation** — does something concrete beat the status quo
+     (a maintainer's explicit "not our job," a competing project's fragility,
+     no complete existing solution) — not just "written in Go."
+   - **Scope** — a working version is shippable solo in a bounded window.
+   - **Testability** — correctness is provable with automated tests, not
+     just a demo recording.
+5. **Tier by effort** within each direction (§3) so there's always a
+   near-term win and a longer bet per direction.
+6. **Promote, don't accumulate.** Re-review monthly: drop anything a third
+   party has since shipped completely (re-run the §1.2c check — a gap can
+   close while this file isn't looking, as happened with the Coolify
+   Terraform provider below); promote at most one idea per direction per
+   cycle.
 
 ## 2. Information sources
 
-Used to feed step 2 above — re-scanned each review cycle, not read linearly.
+**(a) AI-workflow — where the process pain is described**
+- The **support/ops/SRE communities for the vertical being targeted** (e.g.
+  `r/sysadmin`, `r/devops` for an incident-response workflow) — read how
+  people currently patch the process together manually.
+- [n8n Community forum](https://community.n8n.io/) and
+  [n8n blog](https://blog.n8n.io/) — what "production AI workflow" problems
+  practitioners hit once a demo has to become a real process (evaluation,
+  monitoring, environment promotion).
+- Provider engineering blogs for what's newly possible:
+  [Anthropic Engineering](https://www.anthropic.com/engineering),
+  [OpenAI Cookbook](https://cookbook.openai.com/).
+- Dogfooding — friction from running one's own on-call/DevOps process is a
+  first-party AI-workflow signal, weighted above any external source.
 
-**Practitioner blogs / written deep-dives**
-- [Simon Willison's blog](https://simonwillison.net/) — LLM tooling, agent
-  experiments, MCP commentary.
-- [Latent Space](https://www.latent.space/) (newsletter + podcast, swyx/Alessio)
-  — AI engineering trends, tool ecosystem.
-- [Hamel Husain](https://hamel.dev/) — LLM evals, fine-tuning, what actually
-  matters in production AI systems.
-- [Eugene Yan](https://eugeneyan.com/) — applied ML/LLM systems writing.
-- [Chip Huyen](https://huyenchip.com/) — AI engineering / ML systems design.
-- Provider engineering blogs: [Anthropic Engineering](https://www.anthropic.com/engineering),
-  [OpenAI Cookbook](https://cookbook.openai.com/), [Google DeepMind blog](https://deepmind.google/discover/blog/).
+**(b) Games/GameFi — where the genre/format signal is**
+- [itch.io](https://itch.io/) new & popular — what small, solo-shippable
+  formats are getting attention right now.
+- `r/gamedev`, Hacker News "Show HN" game posts — reception patterns for
+  solo-built games.
+- AI-plays-games research/community signal (e.g. arXiv agent-benchmark
+  papers, `Claude/Gemini/GPT Plays X` projects) — read this for *format*
+  inspiration, but treat well-covered games (Pokémon is thoroughly
+  saturated as of 2026 — see PokeAgent Challenge, Continual Harness) as
+  disqualified; the interesting move is a genre nobody's benchmarked yet.
+- If leaning GameFi specifically: current on-chain gaming discourse (e.g.
+  `r/CryptoCurrency` gaming threads, a16z crypto gaming reports) — mainly to
+  gut-check that the regulatory/complexity cost is worth it before
+  committing (see caveat in §3b).
 
-**Protocols, frameworks, and their release notes**
-- [Model Context Protocol](https://modelcontextprotocol.io/) spec + server
-  registry — the main "what tooling does an agent need" signal right now.
-- LangChain / LlamaIndex / CrewAI / AG2 (AutoGen) blogs and changelogs —
-  agent-orchestration patterns and their gaps.
-- Eval/observability vendors: [Langfuse](https://langfuse.com/),
-  [Braintrust](https://www.braintrust.dev/), [Promptfoo](https://www.promptfoo.dev/),
-  [Ragas](https://docs.ragas.io/), [Arize Phoenix](https://phoenix.arize.com/).
-- Inference/serving infra: [vLLM](https://github.com/vllm-project/vllm),
-  [Together AI blog](https://www.together.ai/blog), [Modal blog](https://modal.com/blog).
+**(c) DevOps tools — where the gap gets confirmed**
+- **GitHub Issues/Discussions of the specific tool**, sorted by
+  reactions — the primary source; two concrete hits already found this
+  cycle:
+  - [`n8n-io/n8n` issues](https://github.com/n8n-io/n8n/issues) — repeated,
+    still-recurring workflow/credential import-export failures across
+    environments (foreign-key constraint errors on promotion between
+    dev/stage/prod, breaking again on multiple recent releases).
+  - [`immich-app/immich` discussions](https://github.com/immich-app/immich/discussions) —
+    maintainers explicitly declining to build off-site/deduplicating backup,
+    pointing users to "a third-party tool" instead.
+- **Registries/marketplaces for the ecosystem** (Terraform Registry,
+  OpenTofu Registry, n8n community-nodes list, npm) — check *before*
+  building whether the gap is already filled completely; the Coolify
+  Terraform-provider gap, for example, looked open from a stale search but
+  is already covered by a mature `coolify-terraform/coolify` provider (33
+  resources, 880+ tests) — that idea is dead, don't build it.
+- Release notes / roadmaps of the target tool — confirms whether the
+  maintainers are about to ship the gap themselves (if so, the window is
+  closing — e.g. n8n's own Evaluations feature is actively absorbing some
+  eval-tooling asks in-house).
 
-**Aggregators / community signal**
-- [Hugging Face Daily Papers](https://huggingface.co/papers) and
-  [Papers with Code trending](https://paperswithcode.com/) — research signal
-  worth turning into infra.
-- GitHub Trending (topics: `llm`, `agents`, `mcp`, `rag`) — what's getting
-  adopted *this week*.
-- `r/LocalLLaMA`, `r/MachineLearning`, Hacker News (`ai`, `llm` threads) —
-  practitioner pain points, "why is there no good tool for X" threads.
-- Curated lists: `awesome-llm-apps`, `awesome-mcp-servers`.
+**(d) AI aggregators — where the curation gap (or lack of one) shows up**
+- The [official MCP Registry](https://modelcontextprotocol.io/registry/about.md)
+  itself, and its explicit statement that it delegates security/curation to
+  "downstream aggregators" — read this as an invitation, but check who's
+  already answered it (see the case study in §3d before building here).
+- Independent audits of the space, e.g. the "I audited 6,762 MCP servers"
+  write-up (DEV Community, 2026) — good for finding *specific*, still-unowned
+  sub-gaps rather than the whole space.
+- Provider/API changelogs (OpenAI, Anthropic, Google) and developer
+  complaints about silent breaking changes — a signal for narrower,
+  less-crowded aggregation targets than "MCP server directory."
 
-**Market signal**
-- AI engineer / platform engineer job postings (titles, required-skills
-  sections) — cross-check that backlog ideas track in-demand skills, not just
-  personal curiosity.
-- Dogfooding friction — anything annoying encountered while actually using
-  Cursor/Claude Code/agents day to day is a first-party signal, weighted
-  higher than any external source.
+**(e) Enterprise (simple) — where the budget-backed pain is documented**
+- Vendor blogs and reports from the incumbents in a space (e.g. Cyberhaven,
+  Strac, dope.security for AI data-loss prevention) — they publish the
+  pain data even while selling the expensive answer to it; read the pain,
+  not the pitch.
+- Analyst/survey data cited in those reports (Gartner AI Governance Survey,
+  Salesforce Workforce AI Survey) for how widespread and current the pain
+  still is.
+- G2/Capterra category pages for the incumbent tools — pricing tiers and
+  negative reviews both help find the "too expensive/too closed for what we
+  need" wedge for a simple, self-hosted alternative.
 
-## 3. Ideas by tier
+**(f) Hardware/Arduino — where the project ideas and reality-checks are**
+- [Hackaday](https://hackaday.com/) and `r/esp32`/`r/arduino` — project
+  inspiration and, importantly, realistic build-time expectations.
+- Home Assistant community/add-ons ecosystem — the standard hub most
+  homelab hardware projects end up integrating with.
+- Personal homelab dashboard/monitoring stack already in place — the
+  cheapest source of "what am I manually checking that a physical display
+  or button could replace."
 
-Tiers track **implementation effort + testing rigor**, not importance — a
-Tier 1 project is still worth shipping for portfolio breadth.
+**(g) Hobby moonshot — where to calibrate scope for a "for mastery" project**
+- Classic long-form build-your-own guides:
+  ["Writing an OS in Rust"](https://os.phil-opp.com/),
+  [`build-your-own-x`](https://github.com/codecrafters-io/build-your-own-x)
+  (database engines, container runtimes, etc.), [CodeCrafters](https://codecrafters.io/) —
+  useful for gauging realistic milestone scope, not for copying verbatim.
+- Prior art specifically in Go, since that's the implementation-language
+  default: e.g. Liz Rice's "Build a container in Go" — a reference point for
+  how deep a solo, spare-time systems project can realistically go.
 
-### Tier 1 — Quick wins (days; unit/fixture-level tests; single Go/Python repo)
+## 3. Ideas by direction and tier
 
-| Idea | One-liner | Why it fits |
-|------|-----------|-------------|
-| `mcp-postgres-toolkit` | Go MCP server exposing safe, read-only Postgres introspection/query tools for LLM agents | Direct reuse of Postgres depth; testable against a docker-compose Postgres fixture |
-| `tokencost` | Go/Python CLI that counts tokens and estimates $ cost across OpenAI/Anthropic/Google given a prompt file | Pure-function core, deterministic test vectors, no live API needed for tests |
-| `promptdiff` | CLI that diffs prompt/response pairs across model or prompt versions, like `git diff` for prompts | Useful for regression-testing prompt changes; tests are fixture-pair comparisons |
-| `redis-llm-cache` | Redis-backed exact + semantic cache middleware for LLM provider calls (Go library) | Leans on Redis expertise; integration-testable with a Redis container |
-| `mcp-k8s-readonly` | Read-only MCP server for Kubernetes introspection (pods/logs/events) for agent-assisted debugging | Leans on K8s/DevOps depth; read-only scope keeps it safe and easy to test (kind/k3d cluster in CI) |
+### (a) AI-workflow
 
-### Tier 2 — Medium (1–3 weeks; integration tests, multi-component, docker-compose)
+#### Tier 1 — wedge MVP (weeks, single-tenant, demoable via screen recording)
 
-| Idea | One-liner | Why it fits |
-|------|-----------|-------------|
-| `agentops-lite` | Self-hosted, OpenTelemetry-compatible LLM/agent tracing service (Go API + Postgres + minimal Vue dashboard) | Mini self-hosted alternative to Langfuse/Helicone; full-stack but bounded scope |
-| `evalkit` | CI-friendly eval harness: YAML test cases run against any OpenAI-compatible endpoint, rule-based + LLM-judge assertions, JUnit output | Marries CI/CD background with AI evals; deterministic test cases double as its own test suite |
-| `ragctl` | "Terraform for RAG" — declarative CLI managing chunking config, embeddings, and pgvector/Qdrant indexes with plan/apply/destroy semantics | Directly ports IaC mental model to RAG infra; testable plan/apply against a local vector store |
-| `mcp-gateway` | Go reverse proxy in front of multiple MCP servers: auth, rate limiting, audit logging, tool allow-listing | DevOps-flavored agent infra; ships with Docker Compose + Helm chart |
-| `agent-sandbox-runner` | Dockerized service that safely executes untrusted LLM-agent-generated code (seccomp/gVisor-style isolation) behind an HTTP API | Leverages security/DevOps depth; testable via a battery of escape-attempt fixtures |
+**`oncall-copilot`** — AI incident-response workflow: a Slack slash-command
+that, given a Kubernetes namespace and time window, pulls logs/events/metrics
+and returns a ranked root-cause summary with suggested next steps.
 
-### Tier 3 — Flagship bets (months; e2e + load/security testing; sustained iteration)
+- **Why it's a real workflow, not a demo:** it replaces the specific manual
+  step an on-call engineer does first during an incident (grep logs, check
+  recent deploys, correlate metrics) — a non-technical observer watching a
+  recording immediately recognizes the process it's automating.
+- **Why credible:** direct reuse of the SRE/Kubernetes background; the
+  target audience (DevOps/SRE teams, and the "technical co-founder" persona
+  itself) is one memclutter has first-hand standing in.
+- **Day-one wedge:** one integration (Slack + one cluster's logs/metrics),
+  no runbook RAG, no ticketing integration yet.
 
-| Idea | One-liner | Why it fits |
-|------|-----------|-------------|
-| `vaibe-agent-runtime` | Durable workflow engine purpose-built for long-running LLM agents (tool calls, retries, human-in-the-loop checkpoints), Postgres+Redis backed, MCP-exposed | "Temporal, but for agents" — the clearest case of backend depth + ai-native trend; needs durability/chaos testing |
-| `llm-finops-platform` | Multi-tenant LLM spend tracking/forecasting platform (Go API, Vue dashboard, Postgres/Redis, Helm/Terraform deploy) with per-feature cost attribution and budget alerts | Productizes DevOps/FinOps instincts for AI-spending orgs; needs multi-tenant + load testing |
-| `selfhosted-rag-stack` | One-click Terraform + Helm reference architecture: ingestion, pgvector/Qdrant, reranker, eval loop, observability, wired together | A complete "AI platform engineering" reference implementation; demands integration + perf testing across the whole stack |
-| `mcp-server-registry` | Public registry + security scanner for community MCP servers (static analysis for prompt-injection/tool-abuse risk), with ratings | Community-facing, highest reach but also highest scope/security-testing bar |
+#### Tier 2 — platform (months, multi-tenant/team-facing, real users)
+
+**Support/ops inbox triage** — a self-hosted app that watches a shared inbox
+or ticket queue, classifies/routes incoming requests, and drafts (not
+auto-sends) replies for human approval.
+
+- **Why it's a real workflow:** targets the exact repetitive judgment-call
+  (triage + first-draft response) that consumes support/ops teams' time,
+  with a clear human-in-the-loop safety valve.
+- **Day-one wedge:** classification + drafting for one channel (e.g. Gmail
+  or a single Zendesk queue); skip auto-routing/analytics at first.
+- **Caveat:** more crowded than `oncall-copilot` (Intercom Fin, Zendesk AI
+  already compete here) — only worth promoting if a specific underserved
+  niche (e.g. self-hosted, privacy-first) is confirmed via §2a sources.
+
+### (b) Games / GameFi
+
+#### Tier 1 — for the fun of it (weeks, no AI requirement)
+
+**One small, complete, well-made toy game** — pick a tight scope (a puzzle
+game, an io-style browser game) and finish it, Go backend (if multiplayer)
+or plain client-side, Vue/Canvas frontend. No product ambition, no AI
+requirement — the point is finishing something playable and polished, which
+is its own portfolio signal (shipped ≠ scripted).
+
+#### Tier 2 — AI-native flagship (1–2 months, real-time backend + agent SDK)
+
+**LLM agent arena** — a real-time, spectator-friendly game where LLM-driven
+agents compete against each other (and optionally humans), with a public
+leaderboard. Pick a genre that's *not* already saturated as an AI benchmark
+— Pokémon speedruns are thoroughly covered by Anthropic/Google/OpenAI's own
+"Plays Pokémon" efforts and academic harnesses (PokeAgent Challenge,
+Continual Harness) as of 2026; a social-deduction game (Werewolf/Mafia-style)
+or a fast tactical game is comparatively open ground.
+
+- **Why credible:** the backend (authoritative game server, matchmaking,
+  real-time state, Go) is squarely in the existing moat; the agent-harness
+  layer (giving each LLM player tools, memory, a turn-taking protocol) is
+  the AI-native layer on top.
+- **Day-one wedge:** two hardcoded agent personalities playing each other
+  in one fixed game mode, streamed to a simple spectator page — skip
+  matchmaking, ranked ladders, and human players at first.
+
+#### GameFi caveat
+
+If leaning specifically toward the crypto-game flavor (on-chain assets,
+provably-fair mechanics), treat it as a **deliberate, higher-risk stretch**,
+not a default: it adds legal/regulatory surface and a second unfamiliar
+stack (smart contracts) on top of an already-nontrivial game build. Only
+pursue after the Tier 2 arena idea (or an equivalent) is shipped and there's
+appetite for the extra complexity — don't let "gamefi" become the reason
+Tier 1/2 never gets finished.
+
+### (c) DevOps tools
+
+#### Tier 1 — validated, ready to scope now
+
+**`n8n-promote`** — a companion CLI that safely promotes n8n workflows and
+credentials between environments (dev → staging → prod): strips
+publish-history/webhook references that cause the recurring foreign-key
+constraint failures on import, diffs workflows before promoting, and
+supports re-running promotion as part of a CI/CD pipeline.
+
+- **Validated pain:** multiple still-open, 2026-dated GitHub
+  issues/community threads on exactly this failure mode
+  (`n8n-io/n8n#24367`, `#21210`, `#26814`, and the n8n community "Data
+  Migration from Dev to Prod" thread) — n8n's own CLI import/export breaks
+  again with each release that touches workflow versioning.
+- **Differentiation:** n8n is far bigger than NocoDB (much larger install
+  base than the `nocodb-migrator` precedent), and the pain is squarely
+  "environment promotion," the exact `nocodb-migrator` shape — versioned,
+  scriptable, CI-friendly migrations for a tool whose own tooling is
+  fragile at it.
+- **Scope check before starting:** confirm against the current n8n release
+  (fixes have landed piecemeal, e.g. `2.3.4`) that the gap is still open,
+  the way the algorithm's §1.2c(ii) check requires.
+
+**`immich-vault`** — a purpose-built backup/restore CLI for Immich:
+consistent (DB + asset filesystem in sync, avoiding the desync failure mode
+Immich's own docs warn about), incremental, and off-site (S3/B2)-capable,
+built as the single-purpose companion tool Immich's maintainers have
+explicitly said they won't build in-house.
+
+- **Validated pain:** Immich maintainers, in response to repeated feature
+  requests (`immich-app/immich` discussion #27504, issue #416), explicitly
+  said off-site/reliable backup is out of scope and "third-party tools
+  should handle it" — that's about as direct a green light as this playbook
+  gets.
+- **Differentiation:** today the community's answer is a raw shell script
+  wrapping Borg/Restic with manual container-stop timing — no polished,
+  tested, Immich-aware tool exists yet.
+- **Scope:** database dump + asset directory snapshot with enforced
+  ordering (DB before filesystem, per Immich's own guidance), S3/B2 upload,
+  restore verification — testable end-to-end against a docker-composed
+  Immich instance.
+
+#### Tier 2 — needs a fresh gap-hunt before committing
+
+The next DevOps idea should come from repeating §1.2c/§2c against whatever
+self-hosted tool the owner is *actually running* at review time (Directus,
+Baserow, PocketBase, Appwrite, Paperless-ngx are reasonable places to look
+first) — deliberately left open here rather than guessed, since the whole
+point of this direction is a first-hand, current gap, not a speculative one.
+
+### (d) AI aggregators
+
+#### Case study: check crowding before committing
+
+The most obvious target — an MCP server registry/directory with trust
+scoring — looked like a live, validated gap (namespace-only verification in
+the official registry; a 2026 independent audit calling it "the trust gap
+nobody's filling"). It is **not actually open**: `mpak.dev`, `wmcp.sh`, and
+"CraftedTrust" are already running continuous security-grading services for
+exactly this, with the kind of scanning infrastructure a solo project can't
+easily match. **Do not build a general MCP trust registry** — this is the
+direction's version of the Coolify Terraform-provider trap: the search
+result that looks like a gap is actually three funded competitors deep.
+
+#### Tier 1 — narrower, less-crowded curation (weeks)
+
+**AI provider API changelog tracker** — a single feed/dashboard aggregating
+breaking-change announcements across OpenAI, Anthropic, and Google model/API
+releases (deprecations, parameter changes, pricing changes), instead of
+every developer separately monitoring N changelogs.
+
+- **Status:** pain is plausible (silent API breakage is a recurring
+  developer complaint) but **not yet independently validated** the way the
+  DevOps ideas are — before building, confirm via §2d that no existing
+  aggregator (e.g. a changelog page bundled into an existing dev-tools
+  newsletter) already covers this adequately.
+- **Day-one wedge:** three providers, manually curated at first (RSS/scrape
+  + a changelog page), automation later.
+
+#### Tier 2 — needs its own defensible niche
+
+If pursuing an MCP-adjacent aggregator at all, don't compete head-on with
+the general trust-registry players — a defensible angle would need to be
+something they aren't already doing (e.g. aggregating *self-hostable,
+one-click-deployable* MCP servers with ready Docker Compose/Helm bundles,
+which is a DevOps-flavored packaging problem, not a security-scanning one).
+Left open pending a fresh §1.2d check rather than committed to here.
+
+### (e) Enterprise (simple)
+
+#### Tier 1 — validated pain, narrow self-hosted wedge (weeks–1 month)
+
+**AI-egress secret/PII scanning proxy** — a self-hosted forward proxy
+(pairs naturally with the `aigateway` idea from an earlier review cycle)
+that inspects outbound requests to LLM provider APIs for secrets, API keys,
+and obvious PII patterns, and blocks/warns/logs before the request leaves
+the network.
+
+- **Validated pain:** 2026 industry reporting is unusually specific and
+  consistent — 43% of employees have pasted confidential data into an AI
+  tool (Cyberhaven), only 18% of orgs have a formal AI security policy
+  (Salesforce), and analysts explicitly call out "centralized AI gateway"
+  and "AI-aware DLP" as the recommended first controls.
+- **Differentiation:** the funded incumbents (Strac, dope.security,
+  Nightfall, Cyberhaven) are closed, per-seat SaaS platforms with browser
+  telemetry — the open, self-hosted, "just a proxy you run yourself" slice
+  is explicitly not what they're selling, and is a natural fit for
+  engineering-led orgs that already run their own infra.
+- **Day-one wedge:** regex/entropy-based secret and common-PII-pattern
+  detection on outbound HTTP to a fixed list of provider domains, with a
+  block/warn/audit mode and a log — skip data-lineage/context-awareness
+  (that's the incumbents' actual moat) at first.
+
+#### Tier 2 — needs a second validated pain before committing
+
+The obvious next candidate is somewhere in access-review/compliance-evidence
+automation (a known, budget-backed SOC2/ISO pain), but it hasn't been run
+through §1.2e/§2e yet — left open rather than guessed.
+
+### (f) Hardware / Arduino
+
+#### Tier 1 — quick, genuinely useful (days–weeks)
+
+**Homelab ambient status display** — an ESP32/Arduino-driven e-ink or LED
+display sitting on the desk, showing CI/CD pipeline status, service uptime,
+and (tying back to the AI-workflow/DevOps directions) current LLM API spend
+pulled from `aigateway`-style logs.
+
+- **Why it fits:** direct reuse of the homelab/monitoring stack already in
+  place; the personal-use bar from §1.2f (would it survive on the desk
+  after the novelty wears off) is the real test.
+- **Bonus:** physical dashboards photograph/video well — good, low-effort
+  content for the profile beyond the code itself.
+
+#### Tier 2 — hardware + AI-native crossover (1–2 months)
+
+**Physical MCP trigger** — a button/dial device (ESP32) that acts as a
+tangible MCP client: pressing it fires a defined agent action (e.g.
+"summarize today's on-call incidents," "restart this deployment," "post
+today's standup"). The interesting part isn't the button, it's treating a
+physical object as a first-class MCP client alongside Claude Desktop/Cursor
+— a genuinely underexplored corner of the hardware-meets-agent-tooling
+space, unlike the general MCP registry idea in §3d.
+
+### (g) Hobby moonshot
+
+One pick, pursued for mastery rather than adoption (see §1.2g — exempt from
+the usual pain/scope/testability filters). Options, roughly in order of how
+directly they extend the existing backend moat:
+
+- **Write a toy container runtime in Go** — namespaces, cgroups, a minimal
+  OCI-image puller; the most direct extension of existing Go/Kubernetes
+  literacy, and the most finishable of the three.
+- **Write a toy database engine** — storage engine, WAL, a simple query
+  layer; extends the Postgres/data background toward "understands the thing
+  I operate, from the inside."
+- **Write a toy OS kernel** — the literal "build your own OS," most novel
+  relative to current skills and least directly connected to the rest of
+  the portfolio, but the closest match to what was explicitly asked for.
+
+Whichever gets picked, document it as a build-log/blog series as it goes —
+that's what turns a low-ROI moonshot into at least *some* portfolio signal
+even before (or if) it's ever "finished."
 
 ## Next step
 
-Pick one Tier 1 and (optionally) one Tier 2 idea per review cycle, run them
-through `sys.project.specify` (new repo) or fold the smaller ones into an
-existing repo via `sys.task.specify`, and update
+Seven directions is the full menu, not seven parallel commitments — keep at
+most one or two active at a time. Promote the current top idea through
+`sys.project.specify` once its evidence is current (re-check the relevant
+§1.2/§2 gap status right before starting — gaps close, and competitors
+appear, as the MCP-registry and Coolify case studies above show), and update
 [profile.md](../spec/profile.md)'s Open-source projects table once something
-ships.
+ships. The hobby moonshot (§3g) runs on its own separate, patient timeline
+and doesn't compete for the same review-cycle slot as the others.
