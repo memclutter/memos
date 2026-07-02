@@ -443,6 +443,14 @@ Whichever gets picked, document it as a build-log/blog series as it goes —
 that's what turns a low-ROI moonshot into at least *some* portfolio signal
 even before (or if) it's ever "finished."
 
+## See also
+
+[`project-idea-radar.md`](project-idea-radar.md) is a complementary, wider
+sweep of 50 ideas sliced by a different axis — distance from the existing
+skillset (familiar+trending / stretch+trending / pure experiment) — rather
+than by direction. Treat it as an input to this backlog's own filter (§1.4),
+not a parallel source of truth.
+
 ## Next step
 
 Seven directions is the full menu, not seven parallel commitments — keep at
